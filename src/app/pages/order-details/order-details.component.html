@@ -1,0 +1,100 @@
+<section class="details-page">
+  <!-- Order Header -->
+  <div class="detail-header">
+    <div>
+      <span class="order-type">{{ order.type }}</span>
+      <h2 class="order-id">Order #{{ order.id }}</h2>
+      <p class="order-meta">
+        <span class="meta-item"><span class="material-symbols-outlined">calendar_today</span> {{ order.date }}</span>
+        <span class="meta-item"><span class="material-symbols-outlined">schedule</span> {{ order.time }}</span>
+        <span class="meta-item"><span class="material-symbols-outlined">table_restaurant</span> {{ order.table }}</span>
+      </p>
+    </div>
+    <div class="step-buttons">
+      <button class="prev-btn" routerLink="/orders"><span class="material-symbols-outlined">chevron_left</span> Previous Step</button>
+      <button class="next-btn">Next Step <span class="material-symbols-outlined">chevron_right</span></button>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="timeline-card">
+    <div class="timeline">
+      <div class="timeline-track">
+        <div class="timeline-progress" [style.width.%]="33.33"></div>
+      </div>
+      @for (step of steps; track step.label; let i = $index) {
+        <div class="timeline-step" [class.completed]="step.status === 'completed'" [class.active]="step.status === 'active'" [class.pending]="step.status === 'pending'">
+          <div class="step-circle">
+            <span class="material-symbols-outlined" [style.font-variation-settings]="step.status === 'active' ? '\'FILL\' 1' : '\'FILL\' 0'">{{ step.icon }}</span>
+          </div>
+          <div class="step-info">
+            <p class="step-label">{{ step.label }}</p>
+            <p class="step-status">
+              @if (step.status === 'completed') { Completed }
+              @else if (step.status === 'active') { Active }
+              @else { Pending }
+            </p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Content Grid -->
+  <div class="content-grid">
+    <!-- Order Items -->
+    <div class="items-section">
+      <div class="items-card">
+        <div class="items-header">
+          <h3>Order Items</h3>
+          <span class="item-count">{{ order.items.length }} ITEMS TOTAL</span>
+        </div>
+        <div class="items-list">
+          @for (item of order.items; track item.name) {
+            <div class="order-item">
+              <div class="item-image">
+                <img [src]="item.image" [alt]="item.name" />
+              </div>
+              <div class="item-info">
+                <div class="item-row-top">
+                  <h5>{{ item.name }}</h5>
+                  <span class="item-price">{{ item.price }}</span>
+                </div>
+                <p class="item-details">Quantity: {{ item.qty }} • {{ item.category }}@if (item.cook) { • {{ item.cook }}}</p>
+                @if (item.modifier) {
+                  <span class="modifier-tag" [class.warning]="item.modifierType === 'warning'">{{ item.modifier }}</span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Summary -->
+    <div class="summary-section">
+      <div class="summary-card">
+        <h3>Payment Summary</h3>
+        <div class="summary-rows">
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span class="summary-val">{{ order.subtotal }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Service Tax (15%)</span>
+            <span class="summary-val">{{ order.tax }}</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-row total-row">
+            <span>TOTAL</span>
+            <span class="total-amount">{{ order.total }}</span>
+          </div>
+        </div>
+        <button class="receipt-btn">
+          <span class="material-symbols-outlined">print</span> Print Receipt
+        </button>
+        <button class="cancel-btn">Cancel Order</button>
+      </div>
+    </div>
+  </div>
+</section>

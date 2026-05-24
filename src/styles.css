@@ -1,0 +1,214 @@
+/* ============================================================
+   QRDEER DESIGN SYSTEM — Global Styles & Tokens
+   ============================================================ */
+
+/* ---------- CSS Custom Properties (Design Tokens) ---------- */
+:root {
+  /* Primary */
+  --primary: #9b2330;
+  --primary-dark: #7a051c;
+  --primary-container: #9b2330;
+  --on-primary: #ffffff;
+  --on-primary-container: #ffb1b1;
+  --primary-fixed: #ffdad9;
+  --primary-fixed-dim: #ffb3b3;
+
+  /* Secondary */
+  --secondary: #525f71;
+  --on-secondary: #ffffff;
+  --secondary-container: #d3e1f6;
+
+  /* Tertiary */
+  --tertiary: #00433f;
+  --tertiary-container: #005c57;
+  --on-tertiary-container: #8ad2cb;
+
+  /* Error */
+  --error: #ba1a1a;
+  --error-container: #ffdad6;
+  --on-error-container: #93000a;
+
+  /* Surfaces */
+  --surface: #f8f9ff;
+  --surface-dim: #cddbf0;
+  --surface-bright: #f8f9ff;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #eef4ff;
+  --surface-container: #e5efff;
+  --surface-container-high: #dbe9fe;
+  --surface-container-highest: #d6e4f9;
+  --surface-variant: #d6e4f9;
+
+  /* On surfaces */
+  --on-surface: #0f1c2c;
+  --on-background: #0f1c2c;
+  --on-surface-variant: #584141;
+
+  /* Outline */
+  --outline: #8c7170;
+  --outline-variant: #dfbfbe;
+
+  /* Inverse */
+  --inverse-surface: #243141;
+  --inverse-on-surface: #e9f1ff;
+  --inverse-primary: #ffb3b3;
+
+  /* Utility */
+  --surface-tint: #ac303b;
+  --background: #f8f9ff;
+
+  /* Shadows */
+  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  --shadow-ambient: 0px 20px 40px rgba(15, 28, 44, 0.06);
+  --shadow-elevated: 0px 10px 30px rgba(15, 28, 44, 0.02);
+  --shadow-primary: 0 8px 24px rgba(155, 35, 48, 0.2);
+
+  /* Radii */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* Spacing */
+  --sidebar-width: 256px;
+  --header-height: 64px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 300ms ease;
+}
+
+/* ---------- Reset & Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--surface);
+  color: var(--on-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* Material Symbols defaults */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+  user-select: none;
+}
+
+/* ---------- Custom Scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--outline-variant);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--outline);
+}
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ---------- Typography ---------- */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: inherit;
+}
+
+input {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* ---------- Utility Classes ---------- */
+.primary-gradient {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+}
+
+.card-shadow {
+  box-shadow: var(--shadow-card);
+}
+
+.text-primary { color: var(--primary); }
+.text-secondary { color: var(--secondary); }
+.text-on-background { color: var(--on-background); }
+.bg-surface { background-color: var(--surface); }
+.bg-white { background-color: #ffffff; }
+
+/* ---------- Animations ---------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.3s ease forwards;
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.4s ease forwards;
+}

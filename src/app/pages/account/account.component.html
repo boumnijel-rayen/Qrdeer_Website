@@ -1,0 +1,106 @@
+<section class="account-page">
+  <div class="account-header">
+    <span class="section-label">ACCOUNT SETTINGS</span>
+    <h2 class="section-title">Your Profile</h2>
+  </div>
+
+  <div class="account-grid">
+    <!-- Profile Card -->
+    <div class="profile-card">
+      <div class="profile-top">
+        @if (user?.avatar) {
+          <img [src]="user!.avatar" alt="Profile" class="account-avatar" />
+        } @else {
+          <div class="avatar-placeholder">
+            <span class="material-symbols-outlined">person</span>
+          </div>
+        }
+        <div class="profile-details">
+          <h3>{{ user?.restaurant || 'Restaurant' }}</h3>
+          <p class="profile-email">{{ user?.email || 'admin@qrdeer.com' }}</p>
+          <span class="plan-badge">{{ user?.plan || 'Premium Plan' }}</span>
+        </div>
+      </div>
+
+      <div class="info-rows">
+        <div class="info-row">
+          <span class="material-symbols-outlined">person</span>
+          <div>
+            <p class="info-label">Full Name</p>
+            <p class="info-value">Restaurant Manager</p>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="material-symbols-outlined">mail</span>
+          <div>
+            <p class="info-label">Email</p>
+            <p class="info-value">{{ user?.email || 'admin@qrdeer.com' }}</p>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="material-symbols-outlined">badge</span>
+          <div>
+            <p class="info-label">Role</p>
+            <p class="info-value">{{ user?.role || 'Manager' }}</p>
+          </div>
+        </div>
+        <div class="info-row">
+          <span class="material-symbols-outlined">restaurant</span>
+          <div>
+            <p class="info-label">Restaurant</p>
+            <p class="info-value">{{ user?.restaurant || 'Le Petit Bistro' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="edit-profile-btn" routerLink="/account/edit">
+        <span class="material-symbols-outlined">edit</span> Edit Profile
+      </button>
+    </div>
+
+    <!-- Settings Cards -->
+    <div class="settings-col">
+      <div class="settings-card">
+        <h4>Preferences</h4>
+        <div class="setting-item">
+          <div>
+            <p class="setting-name">Notifications</p>
+            <p class="setting-desc">Receive order alerts and updates</p>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <div>
+            <p class="setting-name">Sound Alerts</p>
+            <p class="setting-desc">Play sound for new orders</p>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <div>
+            <p class="setting-name">Dark Mode</p>
+            <p class="setting-desc">Use dark theme (coming soon)</p>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="danger-zone">
+        <h4>Session</h4>
+        <p>Sign out of your account on this device.</p>
+        <button class="logout-btn" (click)="logout()">
+          <span class="material-symbols-outlined">logout</span> Sign Out
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

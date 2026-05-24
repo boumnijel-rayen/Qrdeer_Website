@@ -1,0 +1,11 @@
+.main-content {
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  flex: 1;
+  background: rgba(248, 249, 255, 0.5);
+}

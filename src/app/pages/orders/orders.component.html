@@ -1,0 +1,104 @@
+<section class="orders-page">
+  <!-- Header -->
+  <div class="orders-header">
+    <div>
+      <h2 class="orders-title">
+        Live Orders
+        <span class="active-badge">{{ activeCount }} Active</span>
+      </h2>
+      <p class="orders-subtitle">Manage incoming and active requests in real-time.</p>
+    </div>
+    <div class="filter-bar">
+      @for (f of filters; track f) {
+        <button
+          class="filter-btn"
+          [class.active]="activeFilter === f"
+          (click)="setFilter(f)"
+        >{{ f }}</button>
+      }
+    </div>
+  </div>
+
+  <!-- Orders Grid -->
+  <div class="orders-grid">
+    @for (order of filteredOrders; track order.id) {
+      <div class="order-card" [routerLink]="['/orders', order.id]">
+        <div class="card-accent" [style.background]="getStatusColor(order.status)"></div>
+
+        <div class="card-top">
+          <div>
+            <span class="table-name">{{ order.table }}</span>
+            <span class="status-badge"
+              [style.color]="getStatusColor(order.status)"
+              [style.background]="getStatusColor(order.status) + '10'"
+            >
+              {{ getStatusLabel(order.status) }}
+              @if (order.prepTime) {
+                <span> ({{ order.prepTime }})</span>
+              }
+            </span>
+          </div>
+          <span class="order-time">{{ order.time }}</span>
+        </div>
+
+        <div class="card-items">
+          @for (item of order.items; track item.name) {
+            <div class="item-row" [class.cancelled]="order.status === 'cancelled'">
+              <span class="item-text">
+                <span class="item-qty" [style.color]="getStatusColor(order.status)">{{ item.qty }}x</span>
+                {{ item.name }}
+              </span>
+              <span class="item-price">{{ item.price }}</span>
+            </div>
+          }
+          <div class="item-total">
+            <span class="total-label">TOTAL</span>
+            <span class="total-value" [class.cancelled-total]="order.status === 'cancelled'">{{ order.total }}</span>
+          </div>
+        </div>
+
+        <div class="card-actions" (click)="$event.stopPropagation()">
+          @if (order.status === 'new') {
+            <button class="action-btn" [style.background]="getStatusColor(order.status)">Accept</button>
+            <button class="reject-btn">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          } @else if (order.status === 'preparing') {
+            <button class="action-btn full" [style.background]="getStatusColor(order.status)">Mark Ready</button>
+          } @else if (order.status === 'ready') {
+            <button class="action-btn full" [style.background]="getStatusColor(order.status)">Delivered</button>
+          } @else if (order.status === 'cancelled') {
+            <button class="action-btn full disabled-btn">Archived</button>
+          } @else if (order.status === 'paid') {
+            <button class="action-btn full outline-btn">View Invoice</button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Kitchen Performance -->
+  <div class="performance-section">
+    <div class="perf-card">
+      <div class="perf-header">
+        <div>
+          <h3>Kitchen Performance</h3>
+          <p>Efficiency metrics for the current shift.</p>
+        </div>
+        <div class="perf-icon">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">timer</span>
+        </div>
+      </div>
+      <div class="perf-grid">
+        <div class="perf-metric">
+          <p class="metric-label">AVG. PREP TIME</p>
+          <p class="metric-value">12.4m</p>
+        </div>
+        <div class="perf-metric">
+          <p class="metric-label">ORDER VOLUME</p>
+          <p class="metric-value">42 / hr</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

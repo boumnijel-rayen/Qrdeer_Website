@@ -1,0 +1,98 @@
+<section class="tables-page">
+  <!-- Header -->
+  <div class="tables-header">
+    <div>
+      <span class="section-label">FLOOR MANAGEMENT</span>
+      <h2 class="section-title">Tables &amp; QR Codes</h2>
+    </div>
+    <div class="table-filters">
+      @for (f of filters; track f) {
+        <button class="tf-btn" [class.active]="(f === 'All Tables' && activeFilter === 'all') || activeFilter === f" (click)="setFilter(f)">{{ f }}</button>
+      }
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div class="tables-grid">
+    <!-- Add Table Card -->
+    <div class="add-card" routerLink="/tables/add">
+      <div class="add-icon">
+        <span class="material-symbols-outlined">add</span>
+      </div>
+      <p class="add-title">Add Table</p>
+      <p class="add-desc">Register a new physical table and generate its unique QR code.</p>
+    </div>
+
+    @for (table of filteredTables; track table.id) {
+      <div class="table-card" [class.disabled-card]="table.status === 'disabled'">
+        <div class="table-top">
+          <div>
+            <span class="table-area">{{ table.area }}</span>
+            <h3 class="table-name">{{ table.name }}</h3>
+          </div>
+          @if (table.status === 'available') {
+            <span class="status-pill available">Available</span>
+          } @else {
+            <span class="status-pill disabled">Disabled</span>
+          }
+        </div>
+
+        <div class="qr-container">
+          <div class="qr-frame">
+            <div class="frame-corner top-left"></div>
+            <div class="frame-corner top-right"></div>
+            <div class="frame-corner bottom-left"></div>
+            <div class="frame-corner bottom-right"></div>
+            <div class="scan-overlay">
+              <div class="scan-line"></div>
+            </div>
+            @if (table.qrImage) {
+              <div class="dot-grid"></div>
+              <img [src]="table.qrImage" [alt]="'QR Code for ' + table.name" class="qr-image" />
+            } @else {
+              <span class="material-symbols-outlined qr-placeholder">qr_code_2</span>
+            }
+          </div>
+        </div>
+
+        <div class="table-actions">
+          @if (table.status === 'available') {
+            <button class="view-qr-btn" [routerLink]="['/tables', table.id, 'qr']">View QR</button>
+            <button class="edit-btn" [routerLink]="['/tables', table.id, 'edit']">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
+          } @else {
+            <button class="inactive-btn">Inactive</button>
+            <button class="power-btn">
+              <span class="material-symbols-outlined">power_settings_new</span>
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Engagement Section -->
+  <div class="engagement-section">
+    <div class="engagement-text">
+      <h4>Real-time Engagement</h4>
+      <p>Monitor table turnover and QR scan performance across your establishment. Optimize staffing based on live floor activity.</p>
+      <div class="engagement-stats">
+        <div class="eng-stat">
+          <span class="eng-label">Total Scans Today</span>
+          <span class="eng-value primary">1,284</span>
+        </div>
+        <div class="eng-stat">
+          <span class="eng-label">Active Sessions</span>
+          <span class="eng-value teal">42</span>
+        </div>
+      </div>
+    </div>
+    <div class="engagement-visual">
+      <div class="visual-frame">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBec6T62U5GL40euf0A6fcSwKXF46Fl6sndiNdmFy_69wcRBw-aMzFv1D284qVcCBQJxrbAY2nb-BgTHKst_PksWuL_xtx8jxD7TncGfA83h7bk77DN5m9Wytbjh7kmOXgW3fd0fU3rhJMcbDnX5N-WVr41nYckdWgk3bq1XwFjPbYCIIvqd74Ud70xb1cFpXYiCdpYXgtiSwmpZwKqy8DX1CKLOzDizWPT7FWXIZOqR2YuQibD5WM2-pk_vbZoAj6ZrgUusC1TLIQ" alt="Analytics Dashboard" />
+        <div class="visual-overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>

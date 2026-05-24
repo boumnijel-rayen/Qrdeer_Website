@@ -1,0 +1,151 @@
+<div class="login-page">
+  <!-- BRAND PANEL -->
+  <div class="brand-panel">
+    <div class="grid-overlay"></div>
+    <div class="brand-content">
+      <a routerLink="/" class="brand-logo">
+        <div class="logo-icon">🦌</div>
+        <div>
+          Qrdeer
+          <span class="brand-tagline">Hospitality Portal</span>
+        </div>
+      </a>
+      <div class="brand-hero">
+        <h2>Elevating Hospitality Through Precision Technology.</h2>
+        <p>Manage your restaurant's orders, menus, tables, and revenue from a single powerful dashboard built for modern hospitality.</p>
+        <div class="brand-features">
+          <div class="brand-feat"><div class="feat-check">✓</div>QR-powered digital menus</div>
+          <div class="brand-feat"><div class="feat-check">✓</div>Live order management & kitchen sync</div>
+          <div class="brand-feat"><div class="feat-check">✓</div>Real-time revenue analytics</div>
+          <div class="brand-feat"><div class="feat-check">✓</div>Table & floor management</div>
+        </div>
+      </div>
+    </div>
+    <div class="brand-footer">
+      <div class="testimonial-mini">
+        <div class="stars-sm">★★★★★</div>
+        <p>"Since adopting Qrdeer, our sales increased by 25%. The dashboard is incredibly intuitive."</p>
+        <strong>— Bistro Italiano, Tunis 🇹🇳</strong>
+      </div>
+      <p>© 2024 Qrdeer. All rights reserved.</p>
+    </div>
+  </div>
+
+  <!-- FORM PANEL -->
+  <div class="form-panel">
+    <div class="form-container">
+      <div class="form-header">
+        <h3>Welcome back</h3>
+        <p>New to Qrdeer? <a routerLink="/pricing">Create a free account →</a></p>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab" [class.active]="activeTab === 'login'" (click)="switchTab('login')">Sign In</button>
+        <button class="auth-tab" [class.active]="activeTab === 'register'" (click)="switchTab('register')">Create Account</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div *ngIf="activeTab === 'login'" id="login-form" class="auth-content">
+        <div class="error-msg" [class.show]="errorMessage">
+          <span>⚠</span>
+          <span id="error-text">{{ errorMessage }}</span>
+        </div>
+
+        <form (ngSubmit)="onSubmit()">
+          <div class="input-group">
+            <label>Email Address</label>
+            <div class="input-wrap">
+              <span class="input-icon">✉</span>
+              <input type="email" [(ngModel)]="email" name="email" placeholder="admin@qrdeer.com" autocomplete="email" [disabled]="isLoading" />
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Password</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔒</span>
+              <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Enter your password" autocomplete="current-password" [disabled]="isLoading" />
+              <button class="toggle-pw" (click)="togglePassword()" type="button" id="pw-toggle">
+                {{ showPassword ? '🙈' : '👁' }}
+              </button>
+            </div>
+          </div>
+
+          <div class="form-options">
+            <label class="remember">
+              <input type="checkbox" name="remember"> Remember me
+            </label>
+            <a href="javascript:void(0)" class="forgot">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="submit-btn" [class.loading]="isLoading" [disabled]="isLoading">
+            <div class="spinner"></div>
+            <span class="btn-text">Sign In to Dashboard</span>
+          </button>
+        </form>
+
+        <div class="or-divider">or continue with</div>
+
+        <div class="social-btns">
+          <button class="social-btn" type="button">🇬 Google</button>
+          <button class="social-btn" type="button">𝕗 Facebook</button>
+        </div>
+
+        <div class="demo-note">
+          🎯 <strong>Demo credentials:</strong><br>
+          Email: admin@qrdeer.com &nbsp;|&nbsp; Password: password
+        </div>
+      </div>
+
+      <!-- REGISTER -->
+      <div *ngIf="activeTab === 'register'" id="register-form" class="auth-content">
+        <div class="error-msg" [class.show]="registerErrorMessage">
+          <span>⚠</span>
+          <span>{{ registerErrorMessage }}</span>
+        </div>
+        <div class="success-msg" *ngIf="registerSuccessMessage">
+          <span>✓</span>
+          <span>{{ registerSuccessMessage }}</span>
+        </div>
+
+        <form (ngSubmit)="onRegisterSubmit()">
+          <div class="input-group">
+            <label>Restaurant Name</label>
+            <div class="input-wrap">
+              <span class="input-icon">🍽</span>
+              <input type="text" [(ngModel)]="registerRestaurantName" name="registerRestaurantName" placeholder="Le Petit Bistro" [disabled]="isRegistering" />
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Email Address</label>
+            <div class="input-wrap">
+              <span class="input-icon">✉</span>
+              <input type="email" [(ngModel)]="registerEmail" name="registerEmail" placeholder="your@restaurant.com" [disabled]="isRegistering" />
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Password</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔒</span>
+              <input type="password" [(ngModel)]="registerPassword" name="registerPassword" placeholder="Create a strong password" [disabled]="isRegistering" />
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Phone Number</label>
+            <div class="input-wrap">
+              <span class="input-icon">📱</span>
+              <input type="tel" [(ngModel)]="registerPhone" name="registerPhone" placeholder="+216 XX XXX XXX" [disabled]="isRegistering" />
+            </div>
+          </div>
+          <button type="submit" class="submit-btn" [class.loading]="isRegistering" [disabled]="isRegistering">
+            <div class="spinner"></div>
+            <span class="btn-text">Create Free Account</span>
+          </button>
+        </form>
+        <p style="text-align:center;font-size:.75rem;color:var(--text3);margin-top:20px">
+          By signing up, you agree to our <a href="javascript:void(0)" style="color:var(--primary)">Terms</a> and <a href="javascript:void(0)" style="color:var(--primary)">Privacy Policy</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

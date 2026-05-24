@@ -1,0 +1,193 @@
+<nav>
+  <a routerLink="/" class="logo"><div class="logo-icon">🦌</div>Qrdeer</a>
+  <div class="nav-links">
+    <a routerLink="/">Home</a>
+    <a routerLink="/pricing" class="active">Pricing</a>
+    <a [routerLink]="['/']" fragment="features">Features</a>
+    <a [routerLink]="['/']" fragment="how">How it works</a>
+  </div>
+  <div style="display:flex;gap:12px">
+    <ng-container *ngIf="isLoggedIn(); else publicNav">
+      <a routerLink="/dashboard" class="btn-primary">Dashboard</a>
+    </ng-container>
+    <ng-template #publicNav>
+      <a routerLink="/login" class="btn-ghost">Sign In</a>
+      <a routerLink="/pricing" fragment="plans" class="btn-primary">Get Started</a>
+    </ng-template>
+  </div>
+</nav>
+
+<div class="pricing-hero">
+  <div class="hero-glow"></div>
+  <div class="badge">Simple, transparent pricing</div>
+  <h1>Plans that scale with<br><span>your restaurant</span></h1>
+  <p class="hero-sub">Start free, grow at your pace. No hidden fees, no long-term commitments — just powerful tools that pay for themselves.</p>
+
+  <div class="toggle-wrap">
+    <span class="toggle-label" [class.active]="!isAnnual" id="monthly-label">Monthly</span>
+    <div class="toggle" [class.annual]="isAnnual" id="billing-toggle" (click)="toggleBilling()">
+      <div class="toggle-knob"></div>
+    </div>
+    <span class="toggle-label" [class.active]="isAnnual" id="annual-label">Annual <span class="save-badge">Save 20%</span></span>
+  </div>
+</div>
+
+<div class="plans" id="plans">
+  <!-- STARTER -->
+  <div class="plan-card">
+    <p class="plan-name">Starter</p>
+    <div style="margin-bottom:4px">
+      <span class="plan-currency">TND</span>
+      <span class="plan-price" id="price-starter">{{ getStarterPrice() }}</span>
+      <span class="plan-period">/month</span>
+    </div>
+    <p class="plan-desc">Perfect for small cafés and food trucks just getting started with digital menus.</p>
+    <div class="plan-divider"></div>
+    <ul class="features-list">
+      <li>1 QR Menu</li>
+      <li>Up to 5 tables</li>
+      <li>Basic menu editor</li>
+      <li>QR code generator</li>
+      <li class="disabled">Order management</li>
+      <li class="disabled">Analytics dashboard</li>
+      <li class="disabled">Staff management</li>
+      <li class="disabled">Priority support</li>
+    </ul>
+    <ng-container *ngIf="isLoggedIn(); else starterPublicBtn">
+      <a routerLink="/dashboard" class="plan-btn outline">Start Free</a>
+    </ng-container>
+    <ng-template #starterPublicBtn>
+      <a routerLink="/login" class="plan-btn outline">Start Free</a>
+    </ng-template>
+  </div>
+
+  <!-- PRO -->
+  <div class="plan-card featured">
+    <div class="featured-badge">Most Popular</div>
+    <p class="plan-name">Professional</p>
+    <div style="margin-bottom:4px">
+      <span class="plan-currency">TND</span>
+      <span class="plan-price" id="price-pro">{{ getProPrice() }}</span>
+      <span class="plan-period">/month</span>
+    </div>
+    <p class="plan-desc">The complete suite for growing restaurants that need live orders and real analytics.</p>
+    <div class="plan-divider"></div>
+    <ul class="features-list">
+      <li>Unlimited QR Menus</li>
+      <li>Up to 50 tables</li>
+      <li>Advanced menu editor</li>
+      <li>Live order management</li>
+      <li>Sales analytics dashboard</li>
+      <li>Table management</li>
+      <li>3 staff accounts</li>
+      <li class="disabled">Priority support</li>
+    </ul>
+    <ng-container *ngIf="isLoggedIn(); else proPublicBtn">
+      <a routerLink="/dashboard" class="plan-btn primary">Get Started</a>
+    </ng-container>
+    <ng-template #proPublicBtn>
+      <a routerLink="/login" class="plan-btn primary">Get Started</a>
+    </ng-template>
+  </div>
+
+  <!-- ENTERPRISE -->
+  <div class="plan-card">
+    <p class="plan-name">Enterprise</p>
+    <div style="margin-bottom:4px">
+      <span class="plan-currency">TND</span>
+      <span class="plan-price" id="price-enterprise">{{ getEnterprisePrice() }}</span>
+      <span class="plan-period">/month</span>
+    </div>
+    <p class="plan-desc">Built for hotel restaurants, large chains, and multi-branch establishments.</p>
+    <div class="plan-divider"></div>
+    <ul class="features-list">
+      <li>Unlimited QR Menus</li>
+      <li>Unlimited tables</li>
+      <li>Full menu suite + API</li>
+      <li>Live order management</li>
+      <li>Advanced analytics + export</li>
+      <li>Unlimited staff accounts</li>
+      <li>Custom branding</li>
+      <li>Dedicated priority support</li>
+    </ul>
+    <ng-container *ngIf="isLoggedIn(); else enterprisePublicBtn">
+      <a routerLink="/dashboard" class="plan-btn outline">Contact Sales</a>
+    </ng-container>
+    <ng-template #enterprisePublicBtn>
+      <a routerLink="/login" class="plan-btn outline">Contact Sales</a>
+    </ng-template>
+  </div>
+</div>
+
+<!-- COMPARISON -->
+<div class="comparison">
+  <h2 class="comp-title">Full feature comparison</h2>
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Starter</th>
+        <th>Pro</th>
+        <th>Enterprise</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>QR Digital Menus</td><td>1</td><td>Unlimited</td><td>Unlimited</td></tr>
+      <tr><td>Tables</td><td>5</td><td>50</td><td>Unlimited</td></tr>
+      <tr><td>Order Management</td><td class="cross">✗</td><td class="check">✓</td><td class="check">✓</td></tr>
+      <tr><td>Analytics Dashboard</td><td class="cross">✗</td><td class="check">✓</td><td class="check">✓</td></tr>
+      <tr><td>Staff Accounts</td><td>1</td><td>3</td><td>Unlimited</td></tr>
+      <tr><td>Custom Branding</td><td class="cross">✗</td><td class="cross">✗</td><td class="check">✓</td></tr>
+      <tr><td>API Access</td><td class="cross">✗</td><td class="cross">✗</td><td class="check">✓</td></tr>
+      <tr><td>Priority Support</td><td class="cross">✗</td><td class="cross">✗</td><td class="check">✓</td></tr>
+      <tr><td>Data Export (CSV/PDF)</td><td class="cross">✗</td><td class="check">✓</td><td class="check">✓</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section">
+  <h2 class="faq-title">Frequently asked questions</h2>
+  <p class="faq-sub">Everything you need to know about our pricing and plans.</p>
+
+  <div class="faq-item" [class.open]="isFaqOpen(0)" (click)="toggleFaq(0)">
+    <div class="faq-q">Can I change my plan anytime?<em class="faq-icon">+</em></div>
+    <p class="faq-a">Yes, absolutely. You can upgrade or downgrade your plan at any time from your account settings. Changes take effect immediately.</p>
+  </div>
+  <div class="faq-item" [class.open]="isFaqOpen(1)" (click)="toggleFaq(1)">
+    <div class="faq-q">Is there a free trial?<em class="faq-icon">+</em></div>
+    <p class="faq-a">The Starter plan is completely free forever. For Pro features, we offer a 14-day free trial with no credit card required.</p>
+  </div>
+  <div class="faq-item" [class.open]="isFaqOpen(2)" (click)="toggleFaq(2)">
+    <div class="faq-q">How does annual billing work?<em class="faq-icon">+</em></div>
+    <p class="faq-a">With annual billing, you pay upfront for 12 months and receive a 20% discount compared to monthly billing. You save 2.4 months worth of fees.</p>
+  </div>
+  <div class="faq-item" [class.open]="isFaqOpen(3)" (click)="toggleFaq(3)">
+    <div class="faq-q">Can I have multiple restaurant locations?<em class="faq-icon">+</em></div>
+    <p class="faq-a">The Enterprise plan supports multiple branches. Contact our sales team and we'll design a custom solution to fit your chain's needs.</p>
+  </div>
+  <div class="faq-item" [class.open]="isFaqOpen(4)" (click)="toggleFaq(4)">
+    <div class="faq-q">What payment methods do you accept?<em class="faq-icon">+</em></div>
+    <p class="faq-a">We accept all major credit/debit cards, and bank transfers for annual Enterprise subscriptions. All payments are processed securely.</p>
+  </div>
+</div>
+
+<!-- BOTTOM CTA -->
+<div class="bottom-cta">
+  <h2>Still have questions?</h2>
+  <p>Our team is happy to walk you through the right plan for your restaurant.</p>
+  <div class="cta-btns">
+    <ng-container *ngIf="isLoggedIn(); else ctaPublicLink">
+      <a routerLink="/dashboard" class="btn-primary btn-lg">Go to Dashboard</a>
+    </ng-container>
+    <ng-template #ctaPublicLink>
+      <a routerLink="/login" class="btn-primary btn-lg">Start Free Today</a>
+    </ng-template>
+    <a [routerLink]="['/']" fragment="testimonials" class="btn-outline-lg">Read Reviews</a>
+  </div>
+</div>
+
+<footer>
+  <a routerLink="/" class="logo"><div class="logo-icon" style="width:28px;height:28px;font-size:14px">🦌</div>Qrdeer</a>
+  <p>© 2024 Qrdeer. All rights reserved.</p>
+</footer>

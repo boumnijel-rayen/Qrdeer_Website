@@ -1,0 +1,289 @@
+<!-- NAV -->
+<nav>
+  <a routerLink="/" class="logo">
+    <div class="logo-icon">🦌</div>
+    Qrdeer
+  </a>
+  <div class="nav-links">
+    <a routerLink="/">Home</a>
+    <a routerLink="/pricing">Pricing</a>
+    <a [routerLink]="['/']" fragment="features">Features</a>
+    <a [routerLink]="['/']" fragment="how">How it works</a>
+    <a [routerLink]="['/']" fragment="testimonials">Reviews</a>
+  </div>
+  <div class="nav-cta">
+    <ng-container *ngIf="isLoggedIn(); else publicNav">
+      <a routerLink="/dashboard" class="btn-primary">Dashboard</a>
+    </ng-container>
+    <ng-template #publicNav>
+      <a routerLink="/login" class="btn-ghost">Sign In</a>
+      <a routerLink="/pricing" class="btn-primary">Get Started</a>
+    </ng-template>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-boxes">
+    <div class="hbox"></div>
+    <div class="hbox"></div>
+    <div class="hbox hbox-accent"></div>
+    <div class="hbox"></div>
+    <div class="hbox"></div>
+    <div class="hbox hbox-accent"></div>
+    <div class="hbox"></div>
+    <div class="hbox"></div>
+    <div class="hbox"></div>
+  </div>
+  <div class="badge"><span class="badge-dot"></span> Trusted by 100+ restaurants in Tunisia</div>
+  <h1>The Future of<br><span>Restaurant Management</span><br>Is Here.</h1>
+  <p class="hero-sub">Qrdeer gives your restaurant a digital brain — QR menus, live order management, real-time analytics, and seamless guest experiences in one powerful platform.</p>
+  <div class="hero-btns">
+    <a routerLink="/pricing" class="btn-primary btn-lg">Start Free Trial</a>
+    <a [routerLink]="['/']" fragment="how" class="btn-outline btn-lg">
+      <span class="material-symbols-outlined" style="font-size:20px">play_circle</span> See how it works
+    </a>
+  </div>
+
+  <div class="stats" style="position:relative;z-index:1">
+    <div class="stat"><div class="stat-num">+100</div><div class="stat-label">Happy Clients</div></div>
+    <div class="stat"><div class="stat-num">+200</div><div class="stat-label">Restaurants & Cafés</div></div>
+    <div class="stat"><div class="stat-num">+100K</div><div class="stat-label">Scans / Month</div></div>
+    <div class="stat"><div class="stat-num">+1M</div><div class="stat-label">Scans / Year</div></div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div style="text-align:center;max-width:700px;margin:0 auto">
+    <p class="section-label reveal">Core Features</p>
+    <h2 class="section-title reveal">Everything your restaurant needs</h2>
+    <p class="section-sub reveal" style="margin:0 auto">From digital menus to live order tracking — Qrdeer handles every aspect of modern hospitality management.</p>
+  </div>
+
+  <div class="features-bento">
+    <!-- MAIN HERO CARD -->
+    <div class="fb-main reveal">
+      <div>
+        <div class="fb-icon"><span class="material-symbols-outlined">qr_code_2</span></div>
+        <h3>QR Digital Menus</h3>
+        <p>Instantly generate unique QR codes for every table. Guests scan and browse your full interactive menu — no app download, no waiting, no friction.</p>
+      </div>
+      <div class="fb-tag">★ Most-used feature</div>
+    </div>
+
+    <!-- TALL CARD 1 -->
+    <div class="fb-tall reveal">
+      <div>
+        <div class="fb-icon"><span class="material-symbols-outlined">receipt_long</span></div>
+        <h3>Live Order Management</h3>
+        <p>Color-coded order statuses keep your kitchen and floor perfectly synced in real-time.</p>
+      </div>
+      <div>
+        <div class="fb-stat">3×</div>
+        <div class="fb-stat-label">Faster kitchen sync</div>
+      </div>
+    </div>
+
+    <!-- TALL CARD 2 -->
+    <div class="fb-tall reveal">
+      <div>
+        <div class="fb-icon"><span class="material-symbols-outlined">analytics</span></div>
+        <h3>Sales Analytics</h3>
+        <p>Revenue trends, peak hours, and top-item reports updated live in your dashboard.</p>
+      </div>
+      <div>
+        <div class="fb-stat">+25%</div>
+        <div class="fb-stat-label">Avg. revenue lift</div>
+      </div>
+    </div>
+
+    <!-- TALL CARD 3 -->
+    <div class="fb-tall reveal">
+      <div>
+        <div class="fb-icon"><span class="material-symbols-outlined">table_restaurant</span></div>
+        <h3>Table Management</h3>
+        <p>Bird's-eye floor view. See active, available, and needing-service tables at a glance.</p>
+      </div>
+      <div>
+        <div class="fb-stat">100%</div>
+        <div class="fb-stat-label">Floor visibility</div>
+      </div>
+    </div>
+
+    <!-- WIDE CARD -->
+    <div class="fb-wide fb-accent reveal">
+      <div class="fb-icon"><span class="material-symbols-outlined">menu_book</span></div>
+      <h3>Real-time Menu Updates</h3>
+      <p>Change prices, add daily specials, or pull items in seconds — no reprinting, ever.</p>
+    </div>
+
+    <!-- DARK CARD -->
+    <div class="fb-dark reveal">
+      <div class="fb-icon"><span class="material-symbols-outlined">group</span></div>
+      <h3>Staff Management</h3>
+      <p>Roles, permissions, and shift tracking — keep every team member accountable.</p>
+    </div>
+
+    <!-- WIDE CARD 2 -->
+    <div class="fb-wide reveal">
+      <div class="fb-icon"><span class="material-symbols-outlined">payments</span></div>
+      <h3>Payment & Receipts</h3>
+      <p>Digital receipts, split-bill support, and daily revenue summaries automatically generated.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="how">
+  <div style="text-align:center;max-width:700px;margin:0 auto">
+    <p class="section-label reveal">Simple Process</p>
+    <h2 class="section-title reveal">Up and running in 3 steps</h2>
+  </div>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">1</div>
+      <h3 class="step-title">Create Your Account</h3>
+      <p class="step-desc">Sign up in minutes. Add your restaurant profile, upload your logo, and configure your branding.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">2</div>
+      <h3 class="step-title">Build Your Digital Menu</h3>
+      <p class="step-desc">Add categories, dishes, prices, and photos. Our editor makes it effortless — no technical skills needed.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">3</div>
+      <h3 class="step-title">Print & Place QR Codes</h3>
+      <p class="step-desc">Download your unique QR codes, print them, and place them on your tables. Your guests can start scanning immediately.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">4</div>
+      <h3 class="step-title">Manage & Grow</h3>
+      <p class="step-desc">Monitor orders, track sales, and use insights to optimize your service. Watch your revenue grow week by week.</p>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<section>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1100px;margin:0 auto">
+    <div>
+      <p class="section-label reveal">Proven Results</p>
+      <h2 class="section-title reveal">Real impact for real restaurants</h2>
+      <p class="section-sub reveal">Restaurants using Qrdeer report measurable improvements within the first month of going digital.</p>
+      <div class="metrics-wrap reveal">
+        <div class="metric-card">
+          <div class="metric-val">+25%</div>
+          <div class="metric-label">Increase in sales revenue</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">-30%</div>
+          <div class="metric-label">Reduction in operating costs</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">3x</div>
+          <div class="metric-label">Faster menu update speed</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">98%</div>
+          <div class="metric-label">Guest satisfaction rate</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal" style="background:var(--surface);border:1px solid var(--border);border-radius:32px;padding:48px;text-align:center">
+      <div style="font-size:4rem;margin-bottom:16px">🦌</div>
+      <p style="font-size:1.5rem;font-weight:800;letter-spacing:-.03em;margin-bottom:12px">Qrdeer Dashboard</p>
+      <p style="font-size:.875rem;color:var(--text2);line-height:1.7;margin-bottom:24px">A premium command center for modern hospitality. Everything at your fingertips.</p>
+      <ng-container *ngIf="isLoggedIn(); else publicDashboardLink">
+        <a routerLink="/dashboard" class="btn-primary" style="display:inline-block;padding:12px 28px">Go to Dashboard →</a>
+      </ng-container>
+      <ng-template #publicDashboardLink>
+        <a routerLink="/login" class="btn-primary" style="display:inline-block;padding:12px 28px">Try the Dashboard →</a>
+      </ng-template>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="testimonials">
+  <div style="text-align:center;max-width:700px;margin:0 auto">
+    <p class="section-label reveal">Testimonials</p>
+    <h2 class="section-title reveal">What our clients say</h2>
+  </div>
+  <div class="test-grid">
+    <div class="test-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="test-text">"Since adopting Qrdeer, we've seen a 25% increase in sales. Guests love the simplicity and instant access to the menu."</p>
+      <div class="test-author">— Bistro Italiano 🇮🇹</div>
+    </div>
+    <div class="test-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="test-text">"Qrdeer transformed the way we work. We save time and money on menu printing, and our guests love the contactless experience."</p>
+      <div class="test-author">— Café Central 🇹🇳</div>
+    </div>
+    <div class="test-card reveal">
+      <div class="stars">★★★★★</div>
+      <p class="test-text">"Real-time updates let us run flash promotions instantly. Orders during slow hours increased by 15% in the first month."</p>
+      <div class="test-author">— Hotel Radisson 🇹🇳</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <div style="position:relative">
+    <p class="section-label" style="margin-bottom:24px">Ready to grow?</p>
+    <h2>Transform your restaurant<br>starting today.</h2>
+    <p style="margin-bottom:40px">No credit card required. Setup in under 10 minutes.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+      <a routerLink="/pricing" class="btn-primary btn-lg">View Pricing Plans</a>
+      <ng-container *ngIf="isLoggedIn(); else publicCta">
+        <a routerLink="/dashboard" class="btn-outline btn-lg">Go to Dashboard</a>
+      </ng-container>
+      <ng-template #publicCta>
+        <a routerLink="/login" class="btn-outline btn-lg">Sign In to Dashboard</a>
+      </ng-template>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a routerLink="/" class="logo" style="font-size:1.25rem">
+        <div class="logo-icon" style="width:32px;height:32px">🦌</div>
+        Qrdeer
+      </a>
+      <p>Digitize your menu, delight your guests, and grow your restaurant with the most powerful QR management platform.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Product</h5>
+      <a [routerLink]="['/']" fragment="features">Features</a>
+      <a routerLink="/pricing">Pricing</a>
+      <a [routerLink]="['/']" fragment="how">How it works</a>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <a routerLink="/">About</a>
+      <a routerLink="/">Blog</a>
+      <a routerLink="/">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h5>Legal</h5>
+      <a routerLink="/">Privacy Policy</a>
+      <a routerLink="/">Terms of Service</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 Qrdeer. All rights reserved.</p>
+    <div class="social">
+      <a routerLink="/">f</a>
+      <a routerLink="/">in</a>
+      <a routerLink="/">tw</a>
+    </div>
+  </div>
+</footer>

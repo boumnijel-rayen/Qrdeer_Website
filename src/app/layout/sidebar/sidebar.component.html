@@ -1,0 +1,36 @@
+<aside class="sidebar">
+  <!-- Brand -->
+  <div class="brand">
+    <div class="brand-icon">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">restaurant_menu</span>
+    </div>
+    <div class="brand-text">
+      <h1>Qrdeer</h1>
+      <p>HOSPITALITY PORTAL</p>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav-list">
+    @for (item of navItems; track item.label) {
+      <a
+        class="nav-item"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: item.route === '/dashboard'}"
+      >
+        <span class="material-symbols-outlined nav-icon" [style.font-variation-settings]="item.filled ? '\'FILL\' 1' : '\'FILL\' 0'">{{ item.icon }}</span>
+        <span class="nav-label">{{ item.label }}</span>
+      </a>
+    }
+  </nav>
+
+  <!-- Support Card -->
+  <div class="sidebar-bottom">
+    <div class="support-card">
+      <p class="support-label">SUPPORT</p>
+      <p class="support-text">Need help with the portal?</p>
+      <button class="support-btn">Contact Center</button>
+    </div>
+  </div>
+</aside>

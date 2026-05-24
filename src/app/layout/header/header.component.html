@@ -1,0 +1,36 @@
+<header class="top-header">
+  <div class="search-bar">
+    <div class="search-wrapper">
+      <span class="material-symbols-outlined search-icon">search</span>
+      <input type="text" placeholder="Search orders, tables, or items..." class="search-input" />
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <div class="icon-group">
+      <button class="icon-btn notification-btn">
+        <span class="material-symbols-outlined">notifications</span>
+        <span class="notification-dot"></span>
+      </button>
+      <button class="icon-btn">
+        <span class="material-symbols-outlined">dark_mode</span>
+      </button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="profile-section" (click)="logout()" title="Click to logout">
+      @if (user?.avatar) {
+        <img [src]="user!.avatar" alt="Profile" class="profile-avatar" />
+      } @else {
+        <div class="profile-avatar-placeholder">
+          <span class="material-symbols-outlined">account_circle</span>
+        </div>
+      }
+      <div class="profile-info">
+        <span class="profile-name">{{ user?.restaurant || 'Restaurant' }}</span>
+        <span class="profile-plan">{{ user?.plan || 'Premium Plan' }}</span>
+      </div>
+    </div>
+  </div>
+</header>

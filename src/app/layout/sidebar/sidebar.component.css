@@ -1,0 +1,149 @@
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
+  z-index: 50;
+  border-right: 1px solid #f1f5f9;
+}
+
+/* Brand */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  margin-bottom: 40px;
+}
+
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.brand-icon .material-symbols-outlined {
+  font-size: 22px;
+}
+
+.brand-text h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.brand-text p {
+  font-size: 0.625rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  font-weight: 700;
+  margin-top: 3px;
+}
+
+/* Navigation */
+.nav-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 16px;
+  overflow-y: auto;
+}
+
+.nav-list::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 12px;
+  color: #64748b;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all var(--transition-base);
+  text-decoration: none;
+}
+
+.nav-item:hover {
+  color: var(--primary);
+  background: #fafafa;
+}
+
+.nav-icon {
+  margin-right: 16px;
+  font-size: 22px !important;
+}
+
+.nav-item.active {
+  color: var(--primary);
+  font-weight: 700;
+  background: rgba(155, 35, 48, 0.05);
+  border: 1px solid rgba(155, 35, 48, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.nav-item.active .nav-icon {
+  font-variation-settings: 'FILL' 1 !important;
+}
+
+/* Support Card */
+.sidebar-bottom {
+  padding: 0 24px;
+  margin-top: 16px;
+}
+
+.support-card {
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 16px;
+  border: 1px solid #f1f5f9;
+}
+
+.support-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.support-text {
+  font-size: 0.75rem;
+  color: #475569;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.support-btn {
+  width: 100%;
+  padding: 8px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.support-btn:hover {
+  background: #f8fafc;
+}

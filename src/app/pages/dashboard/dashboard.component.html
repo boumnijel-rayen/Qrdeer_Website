@@ -1,0 +1,175 @@
+<section class="dashboard">
+<!-- Header -->
+<div class="dash-header">
+  <div>
+    <h2 class="page-title">Dashboard Overview</h2>
+    <p class="page-subtitle">Performance metrics for <span class="text-accent">La Maison d'Or</span></p>
+  </div>
+  <div class="header-actions">
+    <span class="time-badge">LAST 24 HOURS</span>
+    <button class="export-btn">EXPORT REPORT</button>
+  </div>
+</div>
+
+<!-- Status Cards -->
+<div class="status-cards">
+  <div class="stat-card">
+    <div class="stat-info">
+      <p class="stat-label">ACTIVE TABLES</p>
+      <h3 class="stat-value">18<span class="stat-sub">/ 24</span></h3>
+      <p class="stat-trend positive"><span class="material-symbols-outlined">trending_up</span> 75% occupancy</p>
+    </div>
+    <div class="stat-icon red-bg">
+      <span class="material-symbols-outlined">table_restaurant</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-info">
+      <p class="stat-label">TOTAL ORDERS</p>
+      <h3 class="stat-value">142</h3>
+      <p class="stat-trend positive"><span class="material-symbols-outlined">trending_up</span> +12% from yesterday</p>
+    </div>
+    <div class="stat-icon red-bg">
+      <span class="material-symbols-outlined">receipt_long</span>
+    </div>
+  </div>
+
+  <div class="stat-card accent-card">
+    <div class="stat-info">
+      <p class="stat-label light">DAILY REVENUE</p>
+      <h3 class="stat-value white">4,820<span class="stat-unit">TND</span></h3>
+      <p class="stat-trend light"><span class="material-symbols-outlined">bolt</span> Peak service active</p>
+    </div>
+    <div class="stat-icon glass">
+      <span class="material-symbols-outlined">payments</span>
+    </div>
+  </div>
+</div>
+
+<!-- Charts Row -->
+<div class="charts-row">
+  <!-- Revenue Chart -->
+  <div class="chart-card revenue-chart">
+    <div class="chart-header">
+      <h4>Revenue Trends</h4>
+      <div class="chart-tabs">
+        <button class="tab active">7D</button>
+        <button class="tab">1M</button>
+        <button class="tab">1Y</button>
+      </div>
+    </div>
+    <div class="bar-chart">
+      @for (bar of revenueData; track bar.day) {
+      <div class="bar-col" [class.today]="bar.isToday">
+        <div class="bar-tooltip">{{ bar.isToday ? 'Today' : bar.amount }}</div>
+        <div class="bar-fill" [style.height.%]="bar.value"></div>
+        <span class="bar-label">{{ bar.day }}</span>
+      </div>
+      }
+      <div class="grid-lines">
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Peak Hours -->
+  <div class="chart-card peak-card">
+    <h4>Peak Hours</h4>
+    <p class="peak-subtitle">Average traffic density by hour</p>
+    <div class="peak-bars">
+      @for (item of peakHours; track item.label) {
+      <div class="peak-item">
+        <div class="peak-labels">
+          <span>{{ item.label }}</span>
+          <span [class.text-primary]="item.isPrimary">{{ item.level }}</span>
+        </div>
+        <div class="peak-track">
+          <div class="peak-fill" [class.primary]="item.isPrimary" [style.width.%]="item.percent"></div>
+        </div>
+      </div>
+      }
+    </div>
+    <button class="detail-link">DETAILED ANALYTICS <span class="material-symbols-outlined">arrow_forward</span></button>
+  </div>
+</div>
+
+<!-- Live Activity -->
+<div class="activity-card">
+  <div class="activity-header">
+    <div>
+      <h4>Live Activity</h4>
+      <p class="activity-sub">Real-time order and table updates</p>
+    </div>
+    <div class="live-indicator">
+      <span class="live-dot"></span>
+      <span>LIVE UPDATES ENABLED</span>
+    </div>
+  </div>
+  <div class="activity-grid">
+    @for (act of activities; track act.title) {
+    <div class="activity-item">
+      <div class="activity-icon" [style.background]="act.bg">
+        <span class="material-symbols-outlined" [style.color]="act.color">{{ act.icon }}</span>
+      </div>
+      <div>
+        <p class="activity-title">{{ act.title }}</p>
+        <p class="activity-detail">{{ act.detail }}</p>
+        <p class="activity-time">{{ act.time }}</p>
+      </div>
+    </div>
+    }
+  </div>
+</div>
+
+<!-- Bottom Section -->
+<div class="bottom-row">
+  <!-- Product Insights -->
+  <div class="insights-card">
+    <div class="insights-text">
+      <span class="insights-label">PRODUCT INSIGHTS</span>
+      <h4>Top Performing Menu Items</h4>
+      <p>Discover which dishes are driving your revenue this week based on QR scan frequency and checkout data.</p>
+      <button class="catalog-btn">VIEW FULL CATALOG</button>
+    </div>
+    <div class="insights-image">
+      <img
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAq15pGWfmcbqmHnccHlE6rP52CcJEhpGdyyaQcB9JdIwP3d6QBU5_DfwPEhlLq-Of5XnmA2IFptGZ0kCDc1V8dgVjFerOCpDHdiQnNdUsJrxxCckMBRf08X5cezjvkyKI5hjgvDdQQvDdbXpW89GOkRwDGXZKN5rnCmDtscJY2oH-lmWt8xuj-x7h8lG8A61t3dkE9MlvgT0rGnl7QPms5nWMyK_cBtTQzu9j7VJ9P1lUZDYZG2VyxON3ZR3kflRhuA_q793Dx8jg"
+        alt="Artisan Burrata Salad" />
+      <div class="fav-badge">
+        <p class="fav-label">WEEKLY FAVORITE</p>
+        <p class="fav-name">Artisan Burrata Salad</p>
+        <p class="fav-count">245 Sold</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manager Notes -->
+  <div class="notes-card">
+    <div class="notes-header">
+      <span class="material-symbols-outlined">edit_note</span>
+      <h4>Shift Manager Notes</h4>
+    </div>
+    <div class="notes-list">
+      <div class="note-item">
+        <p class="note-time">MORNING SHIFT • 09:00 AM</p>
+        <p class="note-text">"POS system integration is running smoothly. Table 04 QR sticker needs replacement."</p>
+      </div>
+      <div class="note-item">
+        <p class="note-time">STAFF BRIEFING • 11:30 AM</p>
+        <p class="note-text">"New weekend specials added to the digital menu. Staff trained on the upsell flow for the
+          vintage wine selection."</p>
+      </div>
+    </div>
+    <button class="add-note-btn">ADD NEW NOTE</button>
+  </div>
+</div>
+</section>
+
+<!-- FAB -->
+<button class="fab" routerLink="/orders">
+  <span class="material-symbols-outlined">add</span>
+  <span class="fab-tooltip">CREATE ORDER</span>
+</button>
