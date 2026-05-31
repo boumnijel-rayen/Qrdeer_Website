@@ -36,12 +36,12 @@
     <div class="form-container">
       <div class="form-header">
         <h3>Welcome back</h3>
-        <p>New to Qrdeer? <a routerLink="/pricing">Create a free account →</a></p>
+        <p>New to Qrdeer? <a routerLink="/register">Create a free account →</a></p>
       </div>
 
       <div class="auth-tabs">
-        <button class="auth-tab" [class.active]="activeTab === 'login'" (click)="switchTab('login')">Sign In</button>
-        <button class="auth-tab" [class.active]="activeTab === 'register'" (click)="switchTab('register')">Create Account</button>
+        <button class="auth-tab active">Sign In</button>
+        <a routerLink="/register" class="auth-tab">Create Account</a>
       </div>
 
       <!-- LOGIN -->
@@ -97,55 +97,7 @@
         </div>
       </div>
 
-      <!-- REGISTER -->
-      <div *ngIf="activeTab === 'register'" id="register-form" class="auth-content">
-        <div class="error-msg" [class.show]="registerErrorMessage">
-          <span>⚠</span>
-          <span>{{ registerErrorMessage }}</span>
-        </div>
-        <div class="success-msg" *ngIf="registerSuccessMessage">
-          <span>✓</span>
-          <span>{{ registerSuccessMessage }}</span>
-        </div>
 
-        <form (ngSubmit)="onRegisterSubmit()">
-          <div class="input-group">
-            <label>Restaurant Name</label>
-            <div class="input-wrap">
-              <span class="input-icon">🍽</span>
-              <input type="text" [(ngModel)]="registerRestaurantName" name="registerRestaurantName" placeholder="Le Petit Bistro" [disabled]="isRegistering" />
-            </div>
-          </div>
-          <div class="input-group">
-            <label>Email Address</label>
-            <div class="input-wrap">
-              <span class="input-icon">✉</span>
-              <input type="email" [(ngModel)]="registerEmail" name="registerEmail" placeholder="your@restaurant.com" [disabled]="isRegistering" />
-            </div>
-          </div>
-          <div class="input-group">
-            <label>Password</label>
-            <div class="input-wrap">
-              <span class="input-icon">🔒</span>
-              <input type="password" [(ngModel)]="registerPassword" name="registerPassword" placeholder="Create a strong password" [disabled]="isRegistering" />
-            </div>
-          </div>
-          <div class="input-group">
-            <label>Phone Number</label>
-            <div class="input-wrap">
-              <span class="input-icon">📱</span>
-              <input type="tel" [(ngModel)]="registerPhone" name="registerPhone" placeholder="+216 XX XXX XXX" [disabled]="isRegistering" />
-            </div>
-          </div>
-          <button type="submit" class="submit-btn" [class.loading]="isRegistering" [disabled]="isRegistering">
-            <div class="spinner"></div>
-            <span class="btn-text">Create Free Account</span>
-          </button>
-        </form>
-        <p style="text-align:center;font-size:.75rem;color:var(--text3);margin-top:20px">
-          By signing up, you agree to our <a href="javascript:void(0)" style="color:var(--primary)">Terms</a> and <a href="javascript:void(0)" style="color:var(--primary)">Privacy Policy</a>.
-        </p>
-      </div>
     </div>
   </div>
 </div>
