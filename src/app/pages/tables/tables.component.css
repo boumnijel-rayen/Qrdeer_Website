@@ -11,10 +11,10 @@
 .tf-btn.active { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.08); color: var(--primary); font-weight: 700; }
 
 /* Grid */
-.tables-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px; }
+.tables-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
 
 /* Add Card */
-.add-card { display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px dashed rgba(223,191,190,0.4); border-radius: 24px; padding: 32px; min-height: 440px; cursor: pointer; transition: all var(--transition-base); }
+.add-card { display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px dashed rgba(223,191,190,0.4); border-radius: 20px; padding: 24px; min-height: 320px; cursor: pointer; transition: all var(--transition-base); }
 .add-card:hover { border-color: rgba(155,35,48,0.4); background: rgba(155,35,48,0.05); }
 .add-icon { width: 64px; height: 64px; border-radius: 50%; background: rgba(155,35,48,0.1); display: flex; align-items: center; justify-content: center; color: var(--primary); margin-bottom: 16px; transition: transform var(--transition-base); }
 .add-card:hover .add-icon { transform: scale(1.1); }
@@ -23,13 +23,13 @@
 .add-desc { font-size: 0.75rem; color: #64748b; text-align: center; max-width: 180px; }
 
 /* Table Card */
-.table-card { background: white; border-radius: 24px; padding: 24px; box-shadow: var(--shadow-ambient); transition: all 0.3s ease; display: flex; flex-direction: column; }
-.table-card:hover { transform: translateY(-6px); }
+.table-card { background: white; border-radius: 20px; padding: 16px; box-shadow: var(--shadow-ambient); transition: all 0.3s ease; display: flex; flex-direction: column; }
+.table-card:hover { transform: translateY(-4px); }
 .disabled-card { background: rgba(248,250,252,0.5); filter: grayscale(1); border: 1px solid rgba(226,232,240,0.6); box-shadow: none; }
 
-.table-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+.table-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
 .table-area { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; }
-.table-name { font-size: 1.5rem; font-weight: 900; color: var(--on-background); }
+.table-name { font-size: 1.25rem; font-weight: 900; color: var(--on-background); }
 .disabled-card .table-name { color: #94a3b8; }
 
 .status-pill { font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 4px 12px; border-radius: 999px; }
@@ -37,8 +37,8 @@
 .status-pill.disabled { background: #e2e8f0; color: #64748b; }
 
 /* QR Container */
-.qr-container { width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; margin-bottom: 32px; padding: 24px; position: relative; }
-.qr-frame { position: relative; width: 100%; height: 100%; padding: 16px; background: white; border-radius: 16px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); display: flex; align-items: center; justify-content: center; overflow: hidden; transition: transform 0.3s ease; }
+.qr-container { width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; padding: 16px; position: relative; }
+.qr-frame { position: relative; width: 100%; height: 100%; padding: 12px; background: white; border-radius: 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); display: flex; align-items: center; justify-content: center; overflow: hidden; transition: transform 0.3s ease; }
 .table-card:hover .qr-frame { transform: scale(1.02); }
 .frame-corner { position: absolute; width: 24px; height: 24px; border: 3px solid var(--primary); border-radius: 6px; z-index: 5; opacity: 0; transition: opacity 0.3s ease; }
 .table-card:hover .frame-corner { opacity: 1; }

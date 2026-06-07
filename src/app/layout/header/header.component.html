@@ -8,10 +8,58 @@
 
   <div class="header-actions">
     <div class="icon-group">
-      <button class="icon-btn notification-btn">
-        <span class="material-symbols-outlined">notifications</span>
-        <span class="notification-dot"></span>
-      </button>
+      <!-- Notification Wrapper -->
+      <div class="notification-wrapper" (click)="$event.stopPropagation()">
+        <button class="icon-btn notification-btn" (click)="toggleNotification($event)" [class.active]="isNotificationOpen">
+          <span class="material-symbols-outlined">notifications</span>
+          @if (unreadCount > 0) {
+            <span class="notification-dot"></span>
+          }
+        </button>
+
+        <!-- Notification Popup -->
+        @if (isNotificationOpen) {
+          <div class="notification-popup">
+            <div class="popup-header">
+              <div class="popup-title">
+                <h4>Notifications</h4>
+                @if (unreadCount > 0) {
+                  <span class="badge">{{ unreadCount }} new</span>
+                }
+              </div>
+              <button class="mark-read-btn" (click)="markAllAsRead($event)">Mark all as read</button>
+            </div>
+            
+            <div class="notification-list">
+              @for (notification of notifications; track notification.id) {
+                <div class="notification-item" [class.unread]="notification.unread">
+                  <div class="notification-icon" [style.color]="notification.color" [style.background]="notification.color + '1A'">
+                    <span class="material-symbols-outlined">{{ notification.icon }}</span>
+                  </div>
+                  <div class="notification-content">
+                    <p class="notification-title">{{ notification.title }}</p>
+                    <p class="notification-message">{{ notification.message }}</p>
+                    <p class="notification-time">{{ notification.time }}</p>
+                  </div>
+                  @if (notification.unread) {
+                    <div class="unread-indicator"></div>
+                  }
+                </div>
+              }
+              @if (notifications.length === 0) {
+                <div class="empty-notifications">
+                  <span class="material-symbols-outlined">notifications_off</span>
+                  <p>You have no notifications</p>
+                </div>
+              }
+            </div>
+
+            <div class="popup-footer">
+              <button class="view-all-btn" routerLink="/notifications" (click)="closeNotification()">View All Notifications</button>
+            </div>
+          </div>
+        }
+      </div>
       <button class="icon-btn">
         <span class="material-symbols-outlined">dark_mode</span>
       </button>
@@ -19,7 +67,7 @@
 
     <div class="divider"></div>
 
-    <div class="profile-section" (click)="logout()" title="Click to logout">
+    <div class="profile-section" routerLink="/account" title="Account settings">
       @if (user?.avatar) {
         <img [src]="user!.avatar" alt="Profile" class="profile-avatar" />
       } @else {

@@ -49,14 +49,4 @@
 .outline-btn { background: white !important; color: #475569 !important; border: 1px solid #e2e8f0; box-shadow: none !important; }
 .outline-btn:hover { background: #f8fafc !important; }
 
-/* Performance */
-.performance-section { margin-top: 48px; }
-.perf-card { background: white; padding: 24px; border-radius: 16px; border: 1px solid #f1f5f9; box-shadow: var(--shadow-card); max-width: 800px; }
-.perf-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
-.perf-header h3 { font-weight: 900; color: #0f172a; font-size: 1.1rem; }
-.perf-header p { font-size: 0.875rem; color: #94a3b8; font-weight: 500; }
-.perf-icon { width: 40px; height: 40px; background: #fef2f2; color: #dc2626; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
-.perf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.perf-metric { padding: 24px; background: #f8fafc; border-radius: 12px; border: 1px solid #f1f5f9; }
-.metric-label { font-size: 0.625rem; font-weight: 900; text-transform: uppercase; color: #94a3b8; letter-spacing: 0.1em; margin-bottom: 8px; }
-.metric-value { font-size: 2.5rem; font-weight: 900; color: #0f172a; }
+

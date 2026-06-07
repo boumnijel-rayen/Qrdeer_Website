@@ -19,6 +19,7 @@ import { StaffAddComponent } from './pages/staff-add/staff-add.component';
 import { StaffEditComponent } from './pages/staff-edit/staff-edit.component';
 import { AccountEditComponent } from './pages/account-edit/account-edit.component';
 import { SaleDetailsComponent } from './pages/sale-details/sale-details.component';
+import { Notifications } from './pages/notifications/notifications';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent, pathMatch: 'full' },
@@ -44,6 +45,7 @@ export const routes: Routes = [
       { path: 'sales/:id', component: SaleDetailsComponent },
       { path: 'account', component: AccountComponent },
       { path: 'account/edit', component: AccountEditComponent },
+      { path: 'notifications', component: Notifications },
     ]
   },
   { path: '**', redirectTo: '' },

@@ -5,6 +5,12 @@
   flex-direction: column;
 }
 
+app-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
 .page-content {
   flex: 1;
   background: rgba(248, 249, 255, 0.5);

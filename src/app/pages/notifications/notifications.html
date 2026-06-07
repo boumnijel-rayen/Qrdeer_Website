@@ -1,0 +1,79 @@
+<section class="page-container">
+  <div class="top-nav-row">
+    <a routerLink="/orders" class="back-link">
+      <span class="material-symbols-outlined">arrow_back</span>
+      Back to Live Orders
+    </a>
+  </div>
+
+  <div class="page-header">
+    <div class="header-titles">
+      <h1 class="page-title">Notifications</h1>
+      <p class="page-subtitle">Manage your restaurant alerts and messages</p>
+    </div>
+    <div class="header-actions">
+      <button class="outline-btn" (click)="markAllAsRead()">
+        <span class="material-symbols-outlined">done_all</span>
+        Mark all as read
+      </button>
+    </div>
+  </div>
+
+  <div class="controls-bar">
+    <div class="search-box">
+      <span class="material-symbols-outlined search-icon">search</span>
+      <input type="text" placeholder="Search notifications..." (input)="updateSearch($event)" />
+    </div>
+    
+    <div class="filters">
+      @for (filter of filters; track filter.id) {
+        <button 
+          class="filter-btn" 
+          [class.active]="activeFilter === filter.id" 
+          (click)="setFilter(filter.id)">
+          {{ filter.label }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="notifications-content">
+    @if (groupedNotifications.length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">
+          <span class="material-symbols-outlined">notifications_off</span>
+        </div>
+        <h3>No notifications found</h3>
+        <p>You're all caught up! Check back later for new alerts.</p>
+      </div>
+    }
+
+    @for (group of groupedNotifications; track group.dateStr) {
+      <div class="notification-group">
+        <h4 class="group-date">{{ group.dateStr }}</h4>
+        
+        <div class="notification-cards">
+          @for (notification of group.items; track notification.id) {
+            <div class="notification-card" [class.unread]="notification.unread" (click)="markAsRead(notification.id)">
+              <div class="notif-icon-wrapper" [style.color]="notification.color" [style.background]="notification.color + '1A'">
+                <span class="material-symbols-outlined">{{ notification.icon }}</span>
+              </div>
+              
+              <div class="notif-details">
+                <div class="notif-header">
+                  <h5 class="notif-title">{{ notification.title }}</h5>
+                  <span class="notif-time">{{ notification.time }}</span>
+                </div>
+                <p class="notif-message">{{ notification.message }}</p>
+              </div>
+              
+              @if (notification.unread) {
+                <div class="unread-dot"></div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</section>

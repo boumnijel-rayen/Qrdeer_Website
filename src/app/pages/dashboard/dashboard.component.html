@@ -1,175 +1,306 @@
 <section class="dashboard">
-<!-- Header -->
-<div class="dash-header">
-  <div>
-    <h2 class="page-title">Dashboard Overview</h2>
-    <p class="page-subtitle">Performance metrics for <span class="text-accent">La Maison d'Or</span></p>
-  </div>
-  <div class="header-actions">
-    <span class="time-badge">LAST 24 HOURS</span>
-    <button class="export-btn">EXPORT REPORT</button>
-  </div>
-</div>
-
-<!-- Status Cards -->
-<div class="status-cards">
-  <div class="stat-card">
-    <div class="stat-info">
-      <p class="stat-label">ACTIVE TABLES</p>
-      <h3 class="stat-value">18<span class="stat-sub">/ 24</span></h3>
-      <p class="stat-trend positive"><span class="material-symbols-outlined">trending_up</span> 75% occupancy</p>
-    </div>
-    <div class="stat-icon red-bg">
-      <span class="material-symbols-outlined">table_restaurant</span>
-    </div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-info">
-      <p class="stat-label">TOTAL ORDERS</p>
-      <h3 class="stat-value">142</h3>
-      <p class="stat-trend positive"><span class="material-symbols-outlined">trending_up</span> +12% from yesterday</p>
-    </div>
-    <div class="stat-icon red-bg">
-      <span class="material-symbols-outlined">receipt_long</span>
-    </div>
-  </div>
-
-  <div class="stat-card accent-card">
-    <div class="stat-info">
-      <p class="stat-label light">DAILY REVENUE</p>
-      <h3 class="stat-value white">4,820<span class="stat-unit">TND</span></h3>
-      <p class="stat-trend light"><span class="material-symbols-outlined">bolt</span> Peak service active</p>
-    </div>
-    <div class="stat-icon glass">
-      <span class="material-symbols-outlined">payments</span>
-    </div>
-  </div>
-</div>
-
-<!-- Charts Row -->
-<div class="charts-row">
-  <!-- Revenue Chart -->
-  <div class="chart-card revenue-chart">
-    <div class="chart-header">
-      <h4>Revenue Trends</h4>
-      <div class="chart-tabs">
-        <button class="tab active">7D</button>
-        <button class="tab">1M</button>
-        <button class="tab">1Y</button>
-      </div>
-    </div>
-    <div class="bar-chart">
-      @for (bar of revenueData; track bar.day) {
-      <div class="bar-col" [class.today]="bar.isToday">
-        <div class="bar-tooltip">{{ bar.isToday ? 'Today' : bar.amount }}</div>
-        <div class="bar-fill" [style.height.%]="bar.value"></div>
-        <span class="bar-label">{{ bar.day }}</span>
-      </div>
-      }
-      <div class="grid-lines">
-        <div class="grid-line"></div>
-        <div class="grid-line"></div>
-        <div class="grid-line"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Peak Hours -->
-  <div class="chart-card peak-card">
-    <h4>Peak Hours</h4>
-    <p class="peak-subtitle">Average traffic density by hour</p>
-    <div class="peak-bars">
-      @for (item of peakHours; track item.label) {
-      <div class="peak-item">
-        <div class="peak-labels">
-          <span>{{ item.label }}</span>
-          <span [class.text-primary]="item.isPrimary">{{ item.level }}</span>
-        </div>
-        <div class="peak-track">
-          <div class="peak-fill" [class.primary]="item.isPrimary" [style.width.%]="item.percent"></div>
-        </div>
-      </div>
-      }
-    </div>
-    <button class="detail-link">DETAILED ANALYTICS <span class="material-symbols-outlined">arrow_forward</span></button>
-  </div>
-</div>
-
-<!-- Live Activity -->
-<div class="activity-card">
-  <div class="activity-header">
+  <!-- Header -->
+  <div class="dash-header">
     <div>
-      <h4>Live Activity</h4>
-      <p class="activity-sub">Real-time order and table updates</p>
+      <h2 class="page-title">Dashboard Overview</h2>
+      <p class="page-subtitle">Performance metrics for <span class="text-accent">La Maison d'Or</span></p>
     </div>
-    <div class="live-indicator">
-      <span class="live-dot"></span>
-      <span>LIVE UPDATES ENABLED</span>
+    <div class="header-actions">
+      <div class="period-selector" (click)="togglePeriodDropdown($event)">
+        <span class="material-symbols-outlined period-icon">calendar_today</span>
+        <span class="period-label">{{ selectedPeriod.label }}</span>
+        <span class="material-symbols-outlined period-chevron" [class.open]="periodDropdownOpen">expand_more</span>
+      </div>
+      @if (periodDropdownOpen) {
+      <div class="period-dropdown" (click)="$event.stopPropagation()">
+        @if (!showCustomDatePicker) {
+          @for (period of periods; track period.key) {
+          <button class="period-option" [class.active]="selectedPeriod.key === period.key" (click)="selectPeriod(period)">
+            <span class="material-symbols-outlined period-option-icon">{{ period.icon }}</span>
+            <span>{{ period.label }}</span>
+          </button>
+          }
+        } @else {
+          <div class="custom-date-container">
+            <h4 class="custom-date-title">Custom Range</h4>
+            <div class="custom-date-inputs">
+              <div class="input-group">
+                <label>Start Date</label>
+                <input type="date" [(ngModel)]="customStartDate" (change)="onCustomDateChange()">
+              </div>
+              <div class="input-group">
+                <label>End Date</label>
+                <input type="date" [(ngModel)]="customEndDate" (change)="onCustomDateChange()">
+              </div>
+            </div>
+            @if (dateError) {
+              <div class="date-error">{{ dateError }}</div>
+            }
+            <div class="custom-date-actions">
+              <button class="cancel-btn" (click)="cancelCustomDate()">Cancel</button>
+              <button class="apply-btn" (click)="closePeriodDropdown()">Done</button>
+            </div>
+          </div>
+        }
+      </div>
+      }
     </div>
   </div>
-  <div class="activity-grid">
-    @for (act of activities; track act.title) {
-    <div class="activity-item">
-      <div class="activity-icon" [style.background]="act.bg">
-        <span class="material-symbols-outlined" [style.color]="act.color">{{ act.icon }}</span>
+
+  <!-- Status Cards -->
+  <div class="status-cards">
+    <!-- Active Tables Card -->
+    <div class="stat-highlight-card">
+      <div class="stat-highlight-icon-wrap ticket-icon-bg">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">table_restaurant</span>
       </div>
+      <div class="stat-highlight-body">
+        <p class="stat-highlight-label">ACTIVE TABLES</p>
+        <div class="stat-highlight-value-row">
+          <h3 class="stat-highlight-value">{{ data.activeTables.value }}</h3>
+          <span class="stat-highlight-unit">{{ data.activeTables.total }}</span>
+        </div>
+        <div class="stat-highlight-trend positive">
+          <span class="material-symbols-outlined">trending_up</span>
+          <span>{{ data.activeTables.occupancy }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Orders Card -->
+    <div class="stat-highlight-card">
+      <div class="stat-highlight-icon-wrap ticket-icon-bg">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+      </div>
+      <div class="stat-highlight-body">
+        <p class="stat-highlight-label">TOTAL ORDERS</p>
+        <div class="stat-highlight-value-row">
+          <h3 class="stat-highlight-value">{{ data.totalOrders.value }}</h3>
+        </div>
+        <div class="stat-highlight-trend positive">
+          <span class="material-symbols-outlined">trending_up</span>
+          <span>{{ data.totalOrders.trend }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Daily Revenue Card -->
+    <div class="stat-highlight-card">
+      <div class="stat-highlight-icon-wrap ticket-icon-bg">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
+      </div>
+      <div class="stat-highlight-body">
+        <p class="stat-highlight-label">REVENUE</p>
+        <div class="stat-highlight-value-row">
+          <h3 class="stat-highlight-value">{{ data.revenue.value }}</h3>
+          <span class="stat-highlight-unit">TND</span>
+        </div>
+        <div class="stat-highlight-trend positive">
+          <span class="material-symbols-outlined">bolt</span>
+          <span>{{ data.revenue.trend }}</span>
+        </div>
+      </div>
+      <div class="stat-highlight-sparkline">
+        <svg viewBox="0 0 80 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 24 Q10 28 20 20 T40 16 T60 8 T80 4" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M0 24 Q10 28 20 20 T40 16 T60 8 T80 4 V32 H0 Z" fill="url(#revGrad)" opacity="0.15"/>
+          <defs><linearGradient id="revGrad" x1="40" y1="0" x2="40" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="var(--primary)"/><stop offset="1" stop-color="var(--primary)" stop-opacity="0"/></linearGradient></defs>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kitchen Performance -->
+  <div class="performance-section">
+    <div class="perf-card">
+      <div class="perf-header">
+        <div>
+          <h3>Kitchen Performance</h3>
+          <p>Efficiency metrics for the current shift.</p>
+        </div>
+        <div class="perf-icon">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">timer</span>
+        </div>
+      </div>
+      <div class="perf-grid">
+        <div class="perf-metric">
+          <p class="metric-label">AVG. PREP TIME</p>
+          <p class="metric-value">{{ data.kitchenPrep }}</p>
+        </div>
+        <div class="perf-metric">
+          <p class="metric-label">ORDER VOLUME</p>
+          <p class="metric-value">{{ data.kitchenVolume }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Avg. Ticket Card -->
+    <div class="stat-highlight-card ticket-card">
+      <div class="stat-highlight-icon-wrap ticket-icon-bg">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+      </div>
+      <div class="stat-highlight-body">
+        <p class="stat-highlight-label">AVG. TICKET</p>
+        <div class="stat-highlight-value-row">
+          <h3 class="stat-highlight-value">{{ data.avgTicket.value }}</h3>
+          <span class="stat-highlight-unit">TND</span>
+        </div>
+        <div class="stat-highlight-trend positive">
+          <span class="material-symbols-outlined">trending_up</span>
+          <span>{{ data.avgTicket.trend }}</span>
+        </div>
+      </div>
+      <div class="stat-highlight-sparkline">
+        <svg viewBox="0 0 80 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 28 Q10 24 16 20 T32 16 T48 10 T64 14 T80 4" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M0 28 Q10 24 16 20 T32 16 T48 10 T64 14 T80 4 V32 H0 Z" fill="url(#ticketGrad)" opacity="0.15"/>
+          <defs><linearGradient id="ticketGrad" x1="40" y1="0" x2="40" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="var(--primary)"/><stop offset="1" stop-color="var(--primary)" stop-opacity="0"/></linearGradient></defs>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Peak Performance Card -->
+    <div class="stat-highlight-card peak-perf-card">
+      <div class="stat-highlight-icon-wrap peak-icon-bg">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">speed</span>
+      </div>
+      <div class="stat-highlight-body">
+        <p class="stat-highlight-label">PEAK PERFORMANCE</p>
+        <div class="stat-highlight-value-row">
+          <h3 class="stat-highlight-value">{{ data.peakPerf.value }}</h3>
+          <span class="stat-highlight-unit">%</span>
+        </div>
+        <div class="stat-highlight-trend positive">
+          <span class="material-symbols-outlined">trending_up</span>
+          <span>{{ data.peakPerf.trend }}</span>
+        </div>
+      </div>
+      <div class="stat-highlight-ring">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="28" fill="none" stroke="#e2e8f0" stroke-width="5"/>
+          <circle cx="32" cy="32" r="28" fill="none" stroke="var(--tertiary)" stroke-width="5" stroke-linecap="round"
+            [attr.stroke-dasharray]="175.93" [attr.stroke-dashoffset]="ringDashoffset"
+            transform="rotate(-90 32 32)"/>
+        </svg>
+        <span class="ring-label">{{ data.peakPerf.value }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="charts-row">
+    <!-- Revenue Chart -->
+    <div class="chart-card revenue-chart">
+      <div class="chart-header">
+        <div class="chart-title-group">
+          <div class="chart-icon">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bar_chart</span>
+          </div>
+          <div>
+            <h4>Revenue Trends</h4>
+            <p class="chart-subtitle">Daily income across the past 7 days</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="revenue-summary">
+        <div class="summary-main">
+          <h2 class="summary-val">{{ data.revenueTrend.total }}</h2>
+          <span class="summary-unit">TND</span>
+        </div>
+        <div class="summary-trend positive">
+          <span class="material-symbols-outlined">trending_up</span>
+          <span>{{ data.revenueTrend.trend }}</span>
+        </div>
+      </div>
+
+      <div class="bar-chart">
+        @for (bar of revenueData; track bar.day) {
+        <div class="bar-col" [class.today]="bar.isToday">
+          <div class="bar-tooltip">{{ bar.amount }}</div>
+          <div class="bar-track">
+             <div class="bar-fill" [style.height.%]="bar.value"></div>
+          </div>
+          <span class="bar-label" [class.active-label]="bar.isToday">{{ bar.day }}</span>
+        </div>
+        }
+        <div class="grid-lines">
+          <div class="grid-line"></div>
+          <div class="grid-line"></div>
+          <div class="grid-line"></div>
+          <div class="grid-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Peak Hours -->
+    <div class="chart-card peak-card">
+      <div class="peak-header">
+        <div>
+          <h4>Peak Hours</h4>
+          <p class="peak-subtitle">Average traffic density by hour</p>
+        </div>
+        <div class="peak-badge">
+          <span class="material-symbols-outlined"
+            style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+        </div>
+      </div>
+      <div class="peak-bars">
+        @for (item of peakHours; track item.label) {
+        <div class="peak-item">
+          <div class="peak-labels">
+            <span class="peak-time-label">{{ item.label }}</span>
+            <span class="peak-level-tag" [class.level-hot]="item.isPrimary" [class.level-cool]="!item.isPrimary">{{
+              item.level }}</span>
+          </div>
+          <div class="peak-track">
+            <div class="peak-fill" [class.primary]="item.isPrimary" [style.width.%]="item.percent"></div>
+          </div>
+          <span class="peak-percent" [class.text-primary]="item.isPrimary">{{ item.percent }}%</span>
+        </div>
+        }
+      </div>
+      <div class="peak-summary">
+        <div class="peak-summary-item">
+          <span class="peak-summary-dot hot"></span>
+          <span class="peak-summary-text">Busiest: <strong>6 PM – 10 PM</strong></span>
+        </div>
+        <div class="peak-summary-item">
+          <span class="peak-summary-dot cool"></span>
+          <span class="peak-summary-text">Quietest: <strong>10 PM – Close</strong></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Live Activity -->
+  <div class="activity-card">
+    <div class="activity-header">
       <div>
-        <p class="activity-title">{{ act.title }}</p>
-        <p class="activity-detail">{{ act.detail }}</p>
-        <p class="activity-time">{{ act.time }}</p>
+        <h4>Live Activity</h4>
+        <p class="activity-sub">Real-time order and table updates</p>
+      </div>
+      <div class="live-indicator">
+        <span class="live-dot"></span>
+        <span>LIVE UPDATES ENABLED</span>
       </div>
     </div>
-    }
-  </div>
-</div>
-
-<!-- Bottom Section -->
-<div class="bottom-row">
-  <!-- Product Insights -->
-  <div class="insights-card">
-    <div class="insights-text">
-      <span class="insights-label">PRODUCT INSIGHTS</span>
-      <h4>Top Performing Menu Items</h4>
-      <p>Discover which dishes are driving your revenue this week based on QR scan frequency and checkout data.</p>
-      <button class="catalog-btn">VIEW FULL CATALOG</button>
-    </div>
-    <div class="insights-image">
-      <img
-        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAq15pGWfmcbqmHnccHlE6rP52CcJEhpGdyyaQcB9JdIwP3d6QBU5_DfwPEhlLq-Of5XnmA2IFptGZ0kCDc1V8dgVjFerOCpDHdiQnNdUsJrxxCckMBRf08X5cezjvkyKI5hjgvDdQQvDdbXpW89GOkRwDGXZKN5rnCmDtscJY2oH-lmWt8xuj-x7h8lG8A61t3dkE9MlvgT0rGnl7QPms5nWMyK_cBtTQzu9j7VJ9P1lUZDYZG2VyxON3ZR3kflRhuA_q793Dx8jg"
-        alt="Artisan Burrata Salad" />
-      <div class="fav-badge">
-        <p class="fav-label">WEEKLY FAVORITE</p>
-        <p class="fav-name">Artisan Burrata Salad</p>
-        <p class="fav-count">245 Sold</p>
+    <div class="activity-grid">
+      @for (act of activities; track act.title) {
+      <div class="activity-item">
+        <div class="activity-icon" [style.background]="act.bg">
+          <span class="material-symbols-outlined" [style.color]="act.color">{{ act.icon }}</span>
+        </div>
+        <div>
+          <p class="activity-title">{{ act.title }}</p>
+          <p class="activity-detail">{{ act.detail }}</p>
+          <p class="activity-time">{{ act.time }}</p>
+        </div>
       </div>
+      }
     </div>
   </div>
 
-  <!-- Manager Notes -->
-  <div class="notes-card">
-    <div class="notes-header">
-      <span class="material-symbols-outlined">edit_note</span>
-      <h4>Shift Manager Notes</h4>
-    </div>
-    <div class="notes-list">
-      <div class="note-item">
-        <p class="note-time">MORNING SHIFT • 09:00 AM</p>
-        <p class="note-text">"POS system integration is running smoothly. Table 04 QR sticker needs replacement."</p>
-      </div>
-      <div class="note-item">
-        <p class="note-time">STAFF BRIEFING • 11:30 AM</p>
-        <p class="note-text">"New weekend specials added to the digital menu. Staff trained on the upsell flow for the
-          vintage wine selection."</p>
-      </div>
-    </div>
-    <button class="add-note-btn">ADD NEW NOTE</button>
-  </div>
-</div>
+
 </section>
-
-<!-- FAB -->
-<button class="fab" routerLink="/orders">
-  <span class="material-symbols-outlined">add</span>
-  <span class="fab-tooltip">CREATE ORDER</span>
-</button>
