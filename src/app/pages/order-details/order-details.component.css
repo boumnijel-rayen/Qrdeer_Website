@@ -1,5 +1,9 @@
 .details-page { padding: 32px 40px; max-width: 1200px; margin: 0 auto; }
 
+/* Back Button */
+.back-btn { display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; font-weight: 700; color: #64748b; cursor: pointer; transition: all 0.2s; }
+.back-btn:hover { background: #f8fafc; color: var(--primary); }
+
 /* Header */
 .detail-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; gap: 24px; flex-wrap: wrap; }
 .order-type { font-size: 0.688rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--primary); font-weight: 700; display: block; margin-bottom: 8px; }
@@ -8,10 +12,11 @@
 .meta-item { display: flex; align-items: center; gap: 6px; font-size: 0.875rem; }
 .meta-item .material-symbols-outlined { font-size: 18px; }
 
+.header-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
 .step-buttons { display: flex; gap: 12px; }
-.prev-btn { padding: 12px 24px; background: white; border: 1px solid #e2e8f0; color: #475569; font-weight: 700; border-radius: 8px; display: flex; align-items: center; gap: 8px; transition: all var(--transition-base); }
+.prev-btn { padding: 12px 24px; background: white; border: 1px solid #e2e8f0; color: #475569; font-weight: 700; border-radius: 8px; display: flex; align-items: center; gap: 8px; transition: all var(--transition-base); cursor: pointer; }
 .prev-btn:hover { background: #f8fafc; }
-.next-btn { padding: 12px 32px; background: var(--primary); color: white; font-weight: 700; border-radius: 8px; display: flex; align-items: center; gap: 8px; box-shadow: 0 8px 24px rgba(155,35,48,0.3); transition: all var(--transition-base); }
+.next-btn { padding: 12px 32px; background: var(--primary); color: white; font-weight: 700; border-radius: 8px; display: flex; align-items: center; gap: 8px; box-shadow: 0 8px 24px rgba(155,35,48,0.3); transition: all var(--transition-base); cursor: pointer; }
 .next-btn:hover { opacity: 0.9; }
 
 /* Timeline */

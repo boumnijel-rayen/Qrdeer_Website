@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { TableService } from '../tables/table.service';
 
 @Component({
   selector: 'app-table-add',
@@ -23,18 +24,25 @@ import { FormsModule } from '@angular/forms';
       <div class="form-container">
         <form (ngSubmit)="saveTable()">
           <div class="form-group">
-            <label>Table Name / Number</label>
-            <input type="text" [(ngModel)]="table.name" name="name" required placeholder="e.g. Table 04">
+            <label for="add-name">Table Name / Number</label>
+            <div class="input-wrap">
+              <span class="material-symbols-outlined input-icon">tag</span>
+              <input id="add-name" type="text" [(ngModel)]="table.name" name="name" required placeholder="e.g. Table 04">
+            </div>
           </div>
           
           <div class="form-group">
-            <label>Area / Zone</label>
-            <select [(ngModel)]="table.area" name="area">
-              <option value="Indoor Area">Indoor Area</option>
-              <option value="Terrace">Terrace</option>
-              <option value="Bar Area">Bar Area</option>
-              <option value="VIP Lounge">VIP Lounge</option>
-            </select>
+            <label for="add-area">Area / Zone</label>
+            <div class="input-wrap">
+              <span class="material-symbols-outlined input-icon">place</span>
+              <select id="add-area" [(ngModel)]="table.area" name="area">
+                <option value="Indoor Area">Indoor Area</option>
+                <option value="Terrace">Terrace</option>
+                <option value="Bar Area">Bar Area</option>
+                <option value="VIP Lounge">VIP Lounge</option>
+              </select>
+              <span class="material-symbols-outlined select-arrow">expand_more</span>
+            </div>
           </div>
 
           <div class="form-group">
@@ -82,19 +90,26 @@ import { FormsModule } from '@angular/forms';
     .form-container { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
     form { background: white; padding: 40px; border-radius: 24px; box-shadow: var(--shadow-ambient); display: flex; flex-direction: column; gap: 24px; }
     
-    .form-group label { display: block; font-size: 0.875rem; font-weight: 700; color: var(--on-surface); margin-bottom: 8px; }
-    .form-group input, .form-group select { width: 100%; padding: 16px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 1rem; color: var(--on-surface); background: #f8fafc; transition: border-color 0.2s; }
-    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); background: white; }
+    .form-group label { display: block; font-size: 0.875rem; font-weight: 700; color: #475569; margin-bottom: 8px; }
     
-    .status-toggle { display: flex; gap: 12px; }
+    .input-wrap { position: relative; display: flex; align-items: center; }
+    .input-icon { position: absolute; left: 16px; font-size: 20px; color: #94a3b8; pointer-events: none; }
+    .input-wrap input, .input-wrap select { width: 100%; padding: 14px 16px 14px 48px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 0.9375rem; color: var(--on-surface); background: #f8fafc; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; }
+    .input-wrap input:focus, .input-wrap select:focus { outline: none; border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(155,35,48,0.08); }
+    
+    .input-wrap select { appearance: none; padding-right: 48px; }
+    .select-arrow { position: absolute; right: 16px; color: #94a3b8; pointer-events: none; }
+    
+    .status-toggle { display: flex; gap: 12px; margin-top: 8px; }
+    .status-toggle .toggle-option { margin: 0; }
     .toggle-option input { display: none; }
-    .toggle-btn { flex: 1; text-align: center; padding: 14px; border: 1px solid #e2e8f0; border-radius: 12px; font-weight: 700; color: #64748b; cursor: pointer; transition: all 0.2s; }
+    .toggle-btn { display: block; text-align: center; padding: 14px 24px; border: 1px solid #e2e8f0; border-radius: 12px; font-weight: 700; color: #64748b; cursor: pointer; transition: all 0.2s; }
     .toggle-option input:checked + .toggle-btn { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(155, 35, 48, 0.2); }
     
     .form-actions { display: flex; justify-content: flex-end; gap: 16px; margin-top: 16px; }
-    .cancel-btn { padding: 16px 24px; border-radius: 12px; font-weight: 700; color: #64748b; transition: background 0.2s; }
+    .cancel-btn { padding: 16px 24px; border-radius: 12px; font-weight: 700; color: #64748b; transition: background 0.2s; border: none; background: transparent; cursor: pointer; }
     .cancel-btn:hover { background: #f1f5f9; }
-    .submit-btn { padding: 16px 32px; border-radius: 12px; font-weight: 700; color: white; background: var(--primary); box-shadow: 0 8px 24px rgba(155, 35, 48, 0.2); transition: transform 0.2s; }
+    .submit-btn { padding: 16px 32px; border-radius: 12px; font-weight: 700; color: white; background: var(--primary); box-shadow: 0 8px 24px rgba(155, 35, 48, 0.2); transition: transform 0.2s; border: none; cursor: pointer; }
     .submit-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
     
     .preview-panel { display: flex; justify-content: center; align-items: flex-start; }
@@ -113,13 +128,13 @@ export class TableAddComponent {
   table = {
     name: '',
     area: 'Indoor Area',
-    status: 'available'
+    status: 'available' as 'available' | 'disabled'
   };
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private tableService: TableService) {}
 
   saveTable() {
-    // Mock save, navigate back
+    this.tableService.addTable(this.table);
     this.router.navigate(['/tables']);
   }
 }

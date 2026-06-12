@@ -62,8 +62,8 @@
               <span class="material-symbols-outlined">edit</span>
             </button>
           } @else {
-            <button class="inactive-btn">Inactive</button>
-            <button class="power-btn">
+            <button class="inactive-btn" (click)="toggleTableStatus(table)">Inactive</button>
+            <button class="power-btn" (click)="toggleTableStatus(table)">
               <span class="material-symbols-outlined">power_settings_new</span>
             </button>
           }
@@ -72,27 +72,4 @@
     }
   </div>
 
-  <!-- Engagement Section -->
-  <div class="engagement-section">
-    <div class="engagement-text">
-      <h4>Real-time Engagement</h4>
-      <p>Monitor table turnover and QR scan performance across your establishment. Optimize staffing based on live floor activity.</p>
-      <div class="engagement-stats">
-        <div class="eng-stat">
-          <span class="eng-label">Total Scans Today</span>
-          <span class="eng-value primary">1,284</span>
-        </div>
-        <div class="eng-stat">
-          <span class="eng-label">Active Sessions</span>
-          <span class="eng-value teal">42</span>
-        </div>
-      </div>
-    </div>
-    <div class="engagement-visual">
-      <div class="visual-frame">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBec6T62U5GL40euf0A6fcSwKXF46Fl6sndiNdmFy_69wcRBw-aMzFv1D284qVcCBQJxrbAY2nb-BgTHKst_PksWuL_xtx8jxD7TncGfA83h7bk77DN5m9Wytbjh7kmOXgW3fd0fU3rhJMcbDnX5N-WVr41nYckdWgk3bq1XwFjPbYCIIvqd74Ud70xb1cFpXYiCdpYXgtiSwmpZwKqy8DX1CKLOzDizWPT7FWXIZOqR2YuQibD5WM2-pk_vbZoAj6ZrgUusC1TLIQ" alt="Analytics Dashboard" />
-        <div class="visual-overlay"></div>
-      </div>
-    </div>
-  </div>
 </section>

@@ -21,7 +21,7 @@ interface Transaction {
   statusColor: string;
   server?: string;
   subtotal?: number;
-  tax?: number;
+
   tip?: number;
   total?: number;
   paymentMethod?: string;
@@ -105,10 +105,7 @@ interface Transaction {
                   <span class="total-label">Subtotal</span>
                   <span class="total-val">{{ transaction.subtotal?.toFixed(3) }} TND</span>
                 </div>
-                <div class="totals-row">
-                  <span class="total-label">TVA (19%)</span>
-                  <span class="total-val">{{ transaction.tax?.toFixed(3) }} TND</span>
-                </div>
+
                 <div class="totals-row">
                   <span class="total-label">Service Charge</span>
                   <span class="total-val">{{ transaction.tip?.toFixed(3) }} TND</span>
@@ -320,7 +317,7 @@ export class SaleDetailsComponent implements OnInit {
       id: '#ORD-9281', date: 'Oct 24, 2023', time: '19:42 PM', table: 'Table 12',
       items: '3 items', amount: '154.000 TND', status: 'Completed', statusColor: 'green',
       server: 'Ahmed Ben Ali', paymentMethod: 'Credit Card',
-      subtotal: 128.57, tax: 24.43, tip: 1.00, total: 154.00,
+      subtotal: 128.57, tip: 1.00, total: 129.57,
       note: 'Customer requested no onions on the main course.',
       orderItems: [
         { name: 'Grilled Sea Bass', category: 'Main', qty: 1, unitPrice: 58.000, total: 58.000 },
@@ -333,7 +330,7 @@ export class SaleDetailsComponent implements OnInit {
       id: '#ORD-9279', date: 'Oct 24, 2023', time: '18:15 PM', table: 'Table 04',
       items: '7 items', amount: '312.500 TND', status: 'Completed', statusColor: 'green',
       server: 'Fatma Karray', paymentMethod: 'Cash',
-      subtotal: 261.34, tax: 49.66, tip: 1.50, total: 312.50,
+      subtotal: 261.34, tip: 1.50, total: 262.84,
       orderItems: [
         { name: 'Filet Mignon', category: 'Main', qty: 2, unitPrice: 85.000, total: 170.000 },
         { name: 'Lobster Bisque', category: 'Starter', qty: 2, unitPrice: 32.000, total: 64.000 },
@@ -345,7 +342,7 @@ export class SaleDetailsComponent implements OnInit {
       id: '#ORD-9275', date: 'Oct 24, 2023', time: '17:02 PM', table: 'Table 08',
       items: '1 item', amount: '24.000 TND', status: 'Pending', statusColor: 'amber',
       server: 'Youssef Trabelsi', paymentMethod: 'Pending',
-      subtotal: 20.17, tax: 3.83, tip: 0, total: 24.00,
+      subtotal: 20.17, tip: 0, total: 20.17,
       note: 'Order placed but payment not yet received.',
       orderItems: [
         { name: 'Tuna Tartare', category: 'Starter', qty: 1, unitPrice: 24.000, total: 24.000 },
@@ -355,7 +352,7 @@ export class SaleDetailsComponent implements OnInit {
       id: '#ORD-9260', date: 'Oct 23, 2023', time: '22:42 PM', table: 'Table 15',
       items: '12 items', amount: '842.000 TND', status: 'Refunded', statusColor: 'red',
       server: 'Mariem Souissi', paymentMethod: 'Credit Card (Refunded)',
-      subtotal: 706.72, tax: 134.28, tip: 1.00, total: 842.00,
+      subtotal: 706.72, tip: 1.00, total: 707.72,
       note: 'Full refund issued due to service quality complaint.',
       orderItems: [
         { name: 'Wagyu Beef', category: 'Main', qty: 4, unitPrice: 120.000, total: 480.000 },

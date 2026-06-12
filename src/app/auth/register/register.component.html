@@ -66,7 +66,7 @@
         <div class="input-group">
           <label>Restaurant / Coffee Shop Name</label>
           <div class="input-wrap has-icon">
-            <span class="input-icon">🍽</span>
+            <span class="material-symbols-outlined input-icon">restaurant</span>
             <input type="text" [(ngModel)]="restaurantName" name="restaurantName" placeholder="Le Petit Bistro" />
           </div>
         </div>
@@ -74,7 +74,7 @@
         <div class="input-group">
           <label>Email Address</label>
           <div class="input-wrap has-icon">
-            <span class="input-icon">✉</span>
+            <span class="material-symbols-outlined input-icon">mail</span>
             <input type="email" [(ngModel)]="email" name="email" placeholder="your@restaurant.com" autocomplete="email" />
           </div>
         </div>
@@ -83,14 +83,14 @@
           <div class="input-group">
             <label>Phone Number</label>
             <div class="input-wrap has-icon">
-              <span class="input-icon">📱</span>
+              <span class="material-symbols-outlined input-icon">phone</span>
               <input type="tel" [(ngModel)]="phone" name="phone" placeholder="+216 XX XXX XXX" />
             </div>
           </div>
           <div class="input-group">
             <label>City</label>
             <div class="input-wrap has-icon">
-              <span class="input-icon">📍</span>
+              <span class="material-symbols-outlined input-icon">place</span>
               <input type="text" [(ngModel)]="city" name="city" placeholder="Tunis" />
             </div>
           </div>
@@ -100,7 +100,9 @@
           <label>Location</label>
           <div class="map-container" id="map-picker">
             <div class="map-placeholder">
-              <span class="map-pin-icon">📍</span>
+              <div class="map-pin-icon-wrap">
+                <span class="material-symbols-outlined map-pin-icon" style="font-variation-settings: 'FILL' 1;">location_on</span>
+              </div>
               <p>Google Maps Location Picker</p>
               <span class="map-coords">{{ mapLat.toFixed(4) }}, {{ mapLng.toFixed(4) }}</span>
             </div>
@@ -111,14 +113,14 @@
           <div class="input-group">
             <label>Password</label>
             <div class="input-wrap has-icon">
-              <span class="input-icon">🔒</span>
+              <span class="material-symbols-outlined input-icon">lock</span>
               <input type="password" [(ngModel)]="password" name="password" placeholder="Min. 6 characters" autocomplete="new-password" />
             </div>
           </div>
           <div class="input-group">
             <label>Confirm Password</label>
             <div class="input-wrap has-icon">
-              <span class="input-icon">🔒</span>
+              <span class="material-symbols-outlined input-icon">lock_reset</span>
               <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Re-enter password" autocomplete="new-password" />
             </div>
           </div>
@@ -127,35 +129,82 @@
 
       <!-- ═══════════════ STEP 2: Menu Setup ═══════════════ -->
       <div class="step-content" *ngIf="currentStep === 2" [class.slide-in-right]="stepDirection === 'next'" [class.slide-in-left]="stepDirection === 'prev'">
-        <div class="menu-builder">
-          <!-- Add Category -->
-          <div class="add-category-area">
-            <div class="input-wrap has-icon add-category-input">
-              <span class="input-icon">📂</span>
-              <input type="text" [(ngModel)]="newCategoryName" name="newCategoryName" placeholder="Category name (e.g., Beverages, Main Course...)" (keyup.enter)="addCategory()" />
+        
+        <!-- Menu Stats Overview -->
+        <div class="menu-stats-row" *ngIf="categories.length > 0">
+          <div class="menu-stat-card">
+            <div class="menu-stat-icon-wrap">
+              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">category</span>
             </div>
-            <button class="add-category-btn" (click)="addCategory()" type="button">
-              <span>+</span> Add Category
+            <div class="menu-stat-body">
+              <p class="menu-stat-label">CATEGORIES</p>
+              <h3 class="menu-stat-value">{{ categories.length }}</h3>
+            </div>
+          </div>
+          <div class="menu-stat-card">
+            <div class="menu-stat-icon-wrap">
+              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">restaurant_menu</span>
+            </div>
+            <div class="menu-stat-body">
+              <p class="menu-stat-label">TOTAL ITEMS</p>
+              <h3 class="menu-stat-value">{{ getTotalMenuItems() }}</h3>
+            </div>
+          </div>
+          <div class="menu-stat-card">
+            <div class="menu-stat-icon-wrap" [class.accent]="getMenuStatus().isReady" [class.warning]="!getMenuStatus().isReady">
+              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">
+                {{ getMenuStatus().isReady ? 'check_circle' : 'error' }}
+              </span>
+            </div>
+            <div class="menu-stat-body">
+              <p class="menu-stat-label">STATUS</p>
+              <h3 class="menu-stat-value" [class.status-ready]="getMenuStatus().isReady" [class.status-warning]="!getMenuStatus().isReady">
+                {{ getMenuStatus().label }}
+              </h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-builder">
+          <!-- Add Category Bar -->
+          <div class="add-category-bar">
+            <div class="add-cat-icon-wrap">
+              <span class="material-symbols-outlined">add_circle</span>
+            </div>
+            <div class="input-wrap add-category-input">
+              <input type="text" [(ngModel)]="newCategoryName" name="newCategoryName" placeholder="New category name (e.g., Beverages, Main Course...)" (keyup.enter)="addCategory()" />
+            </div>
+            <button class="add-category-action-btn" (click)="addCategory()" type="button">
+              <span class="material-symbols-outlined">add</span>
+              Add
             </button>
           </div>
 
           <!-- Empty State -->
-          <div class="empty-state" *ngIf="categories.length === 0">
-            <div class="empty-icon">🍽</div>
-            <h4>No menu categories yet</h4>
-            <p>Start by adding your first category above, then add items to it.</p>
+          <div class="menu-empty-state" *ngIf="categories.length === 0">
+            <div class="empty-state-icon-wrap">
+              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+            </div>
+            <h4 class="empty-state-title">No menu categories yet</h4>
+            <p class="empty-state-desc">Start by adding your first category above, then add items to it.</p>
           </div>
 
           <!-- Categories -->
           <div class="category-card" *ngFor="let category of categories; let ci = index">
             <div class="category-header">
               <div class="category-title">
-                <span class="category-icon">📋</span>
-                <h4>{{ category.name }}</h4>
-                <span class="item-count">{{ category.items.length }} item{{ category.items.length !== 1 ? 's' : '' }}</span>
+                <div class="cat-icon-badge">
+                  <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">list_alt</span>
+                </div>
+                <div>
+                  <h4>{{ category.name }}</h4>
+                  <span class="item-count">{{ category.items.length }} item{{ category.items.length !== 1 ? 's' : '' }}</span>
+                </div>
               </div>
               <div class="category-actions">
-                <button class="remove-btn" (click)="removeCategory(ci)" type="button" title="Remove category">✕</button>
+                <button class="remove-btn" (click)="removeCategory(ci)" type="button" title="Remove category">
+                  <span class="material-symbols-outlined">close</span>
+                </button>
               </div>
             </div>
 
@@ -167,11 +216,13 @@
                   <!-- Photo Upload -->
                   <div class="item-photo-upload">
                     <div class="photo-preview" *ngIf="item.photo" [style.backgroundImage]="'url(' + item.photo + ')'">
-                      <button class="remove-photo-btn" (click)="removePhoto(ci, ii)" title="Remove photo">✕</button>
+                      <button class="remove-photo-btn" (click)="removePhoto(ci, ii)" title="Remove photo">
+                        <span class="material-symbols-outlined">close</span>
+                      </button>
                     </div>
                     <div class="photo-placeholder" *ngIf="!item.photo" (click)="photoInput.click()">
-                      <span class="photo-icon">📷</span>
-                      <span class="photo-text">Add Photo</span>
+                      <span class="material-symbols-outlined photo-icon">add_a_photo</span>
+                      <span class="photo-text">Photo</span>
                     </div>
                     <input type="file" #photoInput (change)="onPhotoSelected($event, ci, ii)" accept="image/*" style="display: none;" />
                   </div>
@@ -213,14 +264,20 @@
                           <input type="number" [(ngModel)]="sp.price" [name]="'sizePrice_' + ci + '_' + ii + '_' + si" placeholder="0.00" min="0" step="0.5" />
                           <span class="currency-label">DT</span>
                         </div>
-                        <button class="remove-size-btn" (click)="removeSizePrice(ci, ii, si)" type="button">✕</button>
+                        <button class="remove-size-btn" (click)="removeSizePrice(ci, ii, si)" type="button">
+                          <span class="material-symbols-outlined">close</span>
+                        </button>
                       </div>
-                      <button class="add-size-btn" (click)="addSizePrice(ci, ii)" type="button">+ Add Size</button>
+                      <button class="add-size-btn" (click)="addSizePrice(ci, ii)" type="button">
+                        <span class="material-symbols-outlined">add</span> Add Size
+                      </button>
                     </div>
                   </div>
                   </div>
                 </div>
-                <button class="remove-item-btn" (click)="removeItem(ci, ii)" type="button" title="Remove item">✕</button>
+                <button class="remove-item-btn" (click)="removeItem(ci, ii)" type="button" title="Remove item">
+                  <span class="material-symbols-outlined">delete_outline</span>
+                </button>
               </div>
 
               <!-- Empty items -->
@@ -231,7 +288,7 @@
 
             <!-- Add Item Button -->
             <button class="add-item-btn block-style" (click)="addItem(ci)" type="button">
-              <span>+</span> Add New Item
+              <span class="material-symbols-outlined">add</span> Add New Item
             </button>
           </div>
         </div>
@@ -264,11 +321,11 @@
             </div>
             <div class="plan-limits">
               <div class="limit-item">
-                <span class="limit-icon">🪑</span>
+                <span class="material-symbols-outlined limit-icon">table_restaurant</span>
                 <span>{{ plan.maxTables }} tables</span>
               </div>
               <div class="limit-item">
-                <span class="limit-icon">👥</span>
+                <span class="material-symbols-outlined limit-icon">group</span>
                 <span>{{ plan.maxStaff }} staff</span>
               </div>
             </div>
@@ -293,7 +350,7 @@
           <!-- Business Info -->
           <div class="confirm-card">
             <div class="confirm-header">
-              <h4><span class="confirm-icon">🏪</span> Business Information</h4>
+              <h4><span class="material-symbols-outlined confirm-icon">storefront</span> Business Information</h4>
               <button class="edit-btn" (click)="goToStep(1)" type="button">Edit</button>
             </div>
             <div class="confirm-body">
@@ -323,7 +380,7 @@
           <!-- Menu Summary -->
           <div class="confirm-card">
             <div class="confirm-header">
-              <h4><span class="confirm-icon">📋</span> Menu Configuration</h4>
+              <h4><span class="material-symbols-outlined confirm-icon">menu_book</span> Menu Configuration</h4>
               <button class="edit-btn" (click)="goToStep(2)" type="button">Edit</button>
             </div>
             <div class="confirm-body">
@@ -351,7 +408,7 @@
           <!-- Selected Plan -->
           <div class="confirm-card" *ngIf="getSelectedPlan() as plan">
             <div class="confirm-header">
-              <h4><span class="confirm-icon">💎</span> Subscription Plan</h4>
+              <h4><span class="material-symbols-outlined confirm-icon">diamond</span> Subscription Plan</h4>
               <button class="edit-btn" (click)="goToStep(3)" type="button">Edit</button>
             </div>
             <div class="confirm-body">

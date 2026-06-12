@@ -409,6 +409,32 @@ export class RegisterComponent implements AfterViewInit, OnDestroy {
     return this.categories.reduce((total, cat) => total + cat.items.length, 0);
   }
 
+  getMenuStatus(): { label: string; isReady: boolean } {
+    if (this.categories.length === 0) return { label: 'Empty', isReady: false };
+    
+    // Use the same logic as validateStep(2) but without setting errors
+    for (const cat of this.categories) {
+      if (cat.items.length === 0) {
+        return { label: 'Incomplete', isReady: false };
+      }
+      for (const item of cat.items) {
+        if (!item.name.trim()) {
+          return { label: 'Incomplete', isReady: false };
+        }
+        if (item.isMultiPrice) {
+          if (item.sizePrices.length === 0 || item.sizePrices.some(sp => sp.price === null || sp.price < 0)) {
+            return { label: 'Incomplete', isReady: false };
+          }
+        } else {
+          if (item.price === null || item.price < 0) {
+            return { label: 'Incomplete', isReady: false };
+          }
+        }
+      }
+    }
+    return { label: 'Ready', isReady: true };
+  }
+
   getItemPriceDisplay(item: MenuItem): string {
     if (item.isMultiPrice) {
       const prices = item.sizePrices

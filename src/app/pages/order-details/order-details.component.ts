@@ -22,9 +22,7 @@ export class OrderDetailsComponent {
       { name: 'Aged Beef Tenderloin', qty: 1, category: 'Main', cook: 'Medium Rare', price: '145.000 TND', modifier: '', modifierType: '', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuApYZg8YNTVQHw_QdgNSEmQWhU5gEUKCYf0fsCtJzOdks1SPP7xbiLaHO9reIc3RLcZuMv2QTBlqqg89D2HpqvUgZh8LVD8ASoCfns_JoDLMtuY6gMq-Pfd0qNzejUL5VCmxLRVtCVMHQpCf1p7WrHdo3cf3zP4xRIBFY9Oy2L9o7FyY_igUvY6cZtFvszT51jkt_5vuBAu2XDxyIDFf1W8DqG0Qu2hVWZq9bynt0wvnMYXvQ1qJ5hSYQ_yvLPonOu43IzX156E6tY' },
       { name: 'Heritage Garden Salad', qty: 1, category: 'Side', cook: '', price: '40.970 TND', modifier: 'NO CILANTRO', modifierType: 'warning', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDKyaWfDqEU8RU2UDMsevJke6ppF1_w2PL8gPSPi6qkY19kgYgPnpQBZE2cUlVLj3IQZBh3TDh6lOOVPtjg-tQgaS5Cq4kkFhNx42BqeBT7H0Mdr1NAiE92-AlA8LzjlG_hgjEXgyq8RKSBXqJ6P5qbWcMneQa0VkgnddbGaHjVuokA7-AaXoA-EVFyZUxmgFTICMdK6_lwQufaI6inwdgPGM9qmDpbRfVEDpUd-mFRtbqBS25AcyQgpdr8Yo-tS338qBqTJ7ISVTM' },
     ],
-    subtotal: '245.191 TND',
-    tax: '36.779 TND',
-    total: '281.970 TND',
+    total: '245.191 TND',
   };
 
   steps = [

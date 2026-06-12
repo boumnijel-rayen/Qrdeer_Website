@@ -9,6 +9,10 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
   template: `
     <section class="page-container">
       <div class="page-header">
+        <div>
+          <span class="section-label">TABLES</span>
+          <h2 class="section-title">QR Code Detail</h2>
+        </div>
         <button class="back-btn" routerLink="/tables">
           <span class="material-symbols-outlined">arrow_back</span>
           Back to Tables
@@ -63,8 +67,10 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
   `,
   styles: [`
     .page-container { padding: 32px 40px; max-width: 1400px; margin: 0 auto; min-height: 80vh; display: flex; flex-direction: column; }
-    .page-header { margin-bottom: 40px; }
-    .back-btn { display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; font-weight: 700; color: #64748b; transition: all 0.2s; display: inline-flex; }
+    .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; flex-wrap: wrap; gap: 16px; }
+    .section-label { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--primary); display: block; margin-bottom: 8px; }
+    .section-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; color: var(--on-background); margin: 0; }
+    .back-btn { display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; font-weight: 700; color: #64748b; transition: all 0.2s; cursor: pointer; }
     .back-btn:hover { background: #f8fafc; color: var(--primary); }
     
     .qr-showcase { display: flex; gap: 64px; align-items: center; justify-content: center; flex: 1; flex-wrap: wrap; }

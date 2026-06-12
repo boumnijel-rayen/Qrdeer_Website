@@ -29,9 +29,9 @@
   --on-error-container: #93000a;
 
   /* Surfaces */
-  --surface: #f8f9ff;
+  --surface: #f1f5f9;
   --surface-dim: #cddbf0;
-  --surface-bright: #f8f9ff;
+  --surface-bright: #f1f5f9;
   --surface-container-lowest: #ffffff;
   --surface-container-low: #eef4ff;
   --surface-container: #e5efff;
@@ -55,7 +55,7 @@
 
   /* Utility */
   --surface-tint: #ac303b;
-  --background: #f8f9ff;
+  --background: #f1f5f9;
 
   /* Shadows */
   --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
