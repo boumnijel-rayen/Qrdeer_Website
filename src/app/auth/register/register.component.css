@@ -22,6 +22,7 @@
   min-height: 100vh;
   align-items: center;
   background: var(--background);
+  position: relative;
 }
 
 .form-container {
@@ -130,8 +131,13 @@
 }
 
 @keyframes shimmerConnector {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 /* ── 4. Form Header ────────────────────────────────────────── */
@@ -303,7 +309,7 @@
 
 .map-container:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 .map-container .map-placeholder {
@@ -376,7 +382,7 @@
 
 .menu-stat-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 .menu-stat-icon-wrap {
@@ -590,7 +596,7 @@
 
 .category-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 .category-header {
@@ -718,7 +724,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
 }
 
@@ -827,7 +833,8 @@
 }
 
 .price-input-wrap input {
-  padding-right: 48px !important; /* Make room for DT label */
+  padding-right: 48px !important;
+  /* Make room for DT label */
 }
 
 .currency-label {
@@ -1030,6 +1037,70 @@
 
 /* ── 10. Subscription Plans (Step 3) ────────────────────────── */
 
+/* Toggle Switch */
+.toggle-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.toggle-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.toggle-label.active {
+  color: #0f172a;
+}
+
+.toggle {
+  width: 52px;
+  height: 28px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.3s ease;
+}
+
+.toggle.annual {
+  background: rgba(155, 35, 48, 0.1);
+  border-color: rgba(155, 35, 48, 0.2);
+}
+
+.toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(155, 35, 48, 0.3);
+}
+
+.toggle.annual .toggle-knob {
+  transform: translateX(24px);
+}
+
+.save-badge {
+  padding: 3px 10px;
+  background: rgba(155, 35, 48, 0.08);
+  border: 1px solid rgba(155, 35, 48, 0.15);
+  border-radius: 999px;
+  font-size: 0.688rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-left: 6px;
+}
+
 .plans-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1053,9 +1124,8 @@
 }
 
 .plan-card:hover {
-  border-color: #cbd5e1;
   transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
 }
 
 .plan-card.selected {
@@ -1066,7 +1136,6 @@
 }
 
 .plan-card.featured {
-  border: 2px solid var(--primary);
   box-shadow: 0 8px 24px rgba(155, 35, 48, 0.08);
 }
 
@@ -1183,10 +1252,11 @@
 
 /* ── 11. Confirmation (Step 4) ──────────────────────────────── */
 
-.confirmation-section {
+.confirmation-section,
+.confirmation-sections {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 32px;
 }
 
 .confirm-card {
@@ -1200,7 +1270,7 @@
 
 .confirm-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 .confirm-header {
@@ -1273,65 +1343,166 @@
   word-break: break-word;
 }
 
-.confirm-menu-summary {
-  padding: 4px 0;
+.confirm-menu-detail {
+  margin-top: 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
 }
 
-.confirm-menu-summary .confirm-category {
-  margin-bottom: 14px;
+.confirm-menu-detail:not(:last-child) {
+  margin-bottom: 16px;
 }
 
-.confirm-menu-summary .confirm-category:last-child {
-  margin-bottom: 0;
-}
-
-.confirm-menu-summary .confirm-category-name {
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: #0f0a0b;
-  margin-bottom: 6px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid rgba(155, 35, 48, 0.08);
-}
-
-.confirm-menu-summary .confirm-menu-item {
+.menu-cat-summary {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 0 5px 12px;
-  font-size: 0.84rem;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-.confirm-menu-summary .confirm-item-name {
-  color: #5a4a4c;
-  font-weight: 500;
+.cat-name {
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: #0f172a;
 }
 
-.confirm-menu-summary .confirm-item-price {
-  color: #0f0a0b;
+.cat-count {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: rgba(155, 35, 48, 0.08);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.menu-item-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+
+.menu-item-summary:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.item-summary-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.item-summary-photo {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.item-summary-photo.placeholder {
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  box-shadow: none;
+}
+
+.item-summary-photo.placeholder .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.item-summary-name {
+  font-size: 0.875rem;
   font-weight: 600;
+  color: #0f172a;
+}
+
+.item-summary-price {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0f172a;
 }
 
 .confirm-plan-badge {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(155, 35, 48, 0.04);
-  border: 1px solid var(--primary);
+  justify-content: space-between;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
   border-radius: 12px;
-  padding: 12px 18px;
+  padding: 16px 20px;
 }
 
-.confirm-plan-badge .badge-name {
-  font-size: 0.9375rem;
+.plan-badge-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.plan-badge-name {
+  font-size: 1rem;
   font-weight: 800;
-  color: var(--primary);
+  color: #0f172a;
 }
 
-.confirm-plan-badge .badge-price {
-  font-size: 0.875rem;
+.plan-badge-limits {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.plan-badge-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  background: rgba(155, 35, 48, 0.06);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(155, 35, 48, 0.15);
+}
+
+.badge-price-amount {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.badge-price-unit {
+  font-size: 0.8125rem;
   font-weight: 700;
   color: #64748b;
+}
+
+.terms-text {
+  text-align: center;
+  font-size: 0.8125rem;
+  color: #64748b;
+  margin-top: 8px;
+}
+
+.terms-text a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.terms-text a:hover {
+  text-decoration: underline;
+  color: #7a051c; /* primary-dark equivalent */
 }
 
 /* ── 12. Navigation Buttons ─────────────────────────────────── */
@@ -1507,6 +1678,7 @@
     opacity: 0;
     transform: translateX(40px);
   }
+
   100% {
     opacity: 1;
     transform: translateX(0);
@@ -1518,6 +1690,7 @@
     opacity: 1;
     transform: translateX(0);
   }
+
   100% {
     opacity: 0;
     transform: translateX(-40px);
@@ -1529,6 +1702,7 @@
     opacity: 0;
     transform: translateX(-40px);
   }
+
   100% {
     opacity: 1;
     transform: translateX(0);
@@ -1540,6 +1714,7 @@
     opacity: 1;
     transform: translateX(0);
   }
+
   100% {
     opacity: 0;
     transform: translateX(40px);
@@ -1551,6 +1726,7 @@
     opacity: 0;
     transform: translateY(6px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -1558,12 +1734,47 @@
 }
 
 @keyframes pulseGlow {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 0 0 rgba(155, 35, 48, 0.15);
   }
+
   50% {
     box-shadow: 0 0 0 8px rgba(155, 35, 48, 0);
   }
+}
+
+/* ── 15. Login Link ───────────────────────────────────────────── */
+
+.login-link {
+  position: absolute;
+  top: 32px;
+  right: 48px;
+  margin-top: 0;
+  font-size: 0.9375rem;
+  color: #64748b;
+  font-weight: 500;
+  z-index: 10;
+}
+
+.login-link a {
+  color: var(--primary);
+  font-weight: 800;
+  text-decoration: none;
+  margin-left: 6px;
+  position: relative;
+  transition: all 0.2s ease;
+  padding: 6px 16px;
+  background: rgba(155, 35, 48, 0.08);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.login-link a:hover {
+  background: rgba(155, 35, 48, 0.15);
+  transform: translateX(2px);
 }
 
 /* ── 16. Responsive ─────────────────────────────────────────── */

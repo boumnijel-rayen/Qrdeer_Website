@@ -26,7 +26,7 @@ interface MenuCategory {
 interface SubscriptionPlan {
   id: string;
   name: string;
-  price: number;
+  basePrice: number;
   maxTables: number | string;
   maxStaff: number | string;
   features: string[];
@@ -64,60 +64,70 @@ export class RegisterComponent implements AfterViewInit, OnDestroy {
   newCategoryName = '';
 
   // Step 3: Subscription Plans
+  // Step 3: Subscription Plans
   selectedPlanId = '';
+  isAnnual = false;
   plans: SubscriptionPlan[] = [
     {
-      id: 'basic',
-      name: 'Basic',
-      price: 40,
-      maxTables: 10,
-      maxStaff: 2,
+      id: 'starter',
+      name: 'Starter',
+      basePrice: 0,
+      maxTables: 5,
+      maxStaff: 1,
       features: [
         '1 QR Digital Menu',
-        'Up to 10 tables',
-        'Up to 2 staff members',
+        'Up to 5 tables',
         'Basic menu editor',
-        'QR code generator',
-        'Email support'
+        'QR code generator'
       ],
       isFeatured: false
     },
     {
-      id: 'standard',
-      name: 'Standard',
-      price: 80,
-      maxTables: 30,
-      maxStaff: 8,
+      id: 'pro',
+      name: 'Professional',
+      basePrice: 79,
+      maxTables: 50,
+      maxStaff: 3,
       features: [
         'Unlimited QR Menus',
-        'Up to 30 tables',
-        'Up to 8 staff members',
+        'Up to 50 tables',
+        '3 staff accounts',
         'Advanced menu editor',
         'Live order management',
         'Sales analytics dashboard',
-        'Priority email support'
+        'Table management'
       ],
       isFeatured: true
     },
     {
-      id: 'premium',
-      name: 'Premium',
-      price: 100,
+      id: 'enterprise',
+      name: 'Enterprise',
+      basePrice: 149,
       maxTables: 'Unlimited',
       maxStaff: 'Unlimited',
       features: [
         'Unlimited QR Menus',
         'Unlimited tables',
-        'Unlimited staff members',
+        'Unlimited staff accounts',
         'Full menu suite + API',
+        'Live order management',
         'Advanced analytics + export',
         'Custom branding',
-        'Dedicated priority support',
-        'Multi-location support'
+        'Dedicated priority support'
       ],
       isFeatured: false
     }
   ];
+
+  toggleBilling(): void {
+    this.isAnnual = !this.isAnnual;
+  }
+
+  getPlanPrice(basePrice: number): number | string {
+    if (basePrice === 0) return '0';
+    const mult = this.isAnnual ? 0.8 : 1;
+    return Math.round(basePrice * mult);
+  }
 
   // Step 4: Confirmation
   isSubmitting = false;

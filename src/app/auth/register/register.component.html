@@ -296,6 +296,15 @@
 
       <!-- ═══════════════ STEP 3: Subscription Plans ═══════════════ -->
       <div class="step-content" *ngIf="currentStep === 3" [class.slide-in-right]="stepDirection === 'next'" [class.slide-in-left]="stepDirection === 'prev'">
+        
+        <div class="toggle-wrap">
+          <span class="toggle-label" [class.active]="!isAnnual" (click)="isAnnual = false">Monthly</span>
+          <div class="toggle" [class.annual]="isAnnual" (click)="toggleBilling()">
+            <div class="toggle-knob"></div>
+          </div>
+          <span class="toggle-label" [class.active]="isAnnual" (click)="isAnnual = true">Annual <span class="save-badge">Save 20%</span></span>
+        </div>
+
         <div class="plans-grid">
           <div
             class="plan-card"
@@ -313,22 +322,13 @@
             </div>
             <p class="plan-name">{{ plan.name }}</p>
             <div class="plan-price-wrap">
-              <span class="plan-price">{{ plan.price }}</span>
+              <span class="plan-price">{{ getPlanPrice(plan.basePrice) }}</span>
               <div class="plan-price-meta">
                 <span class="plan-currency">DT</span>
                 <span class="plan-period">/month</span>
               </div>
             </div>
-            <div class="plan-limits">
-              <div class="limit-item">
-                <span class="material-symbols-outlined limit-icon">table_restaurant</span>
-                <span>{{ plan.maxTables }} tables</span>
-              </div>
-              <div class="limit-item">
-                <span class="material-symbols-outlined limit-icon">group</span>
-                <span>{{ plan.maxStaff }} staff</span>
-              </div>
-            </div>
+
             <div class="plan-divider"></div>
             <ul class="plan-features-list">
               <li *ngFor="let feature of plan.features">{{ feature }}</li>
@@ -398,7 +398,13 @@
                   <span class="cat-count">{{ cat.items.length }} item{{ cat.items.length !== 1 ? 's' : '' }}</span>
                 </div>
                 <div class="menu-item-summary" *ngFor="let item of cat.items">
-                  <span class="item-summary-name">{{ item.name }}</span>
+                  <div class="item-summary-main">
+                    <div class="item-summary-photo" *ngIf="item.photo" [style.backgroundImage]="'url(' + item.photo + ')'"></div>
+                    <div class="item-summary-photo placeholder" *ngIf="!item.photo">
+                      <span class="material-symbols-outlined">restaurant</span>
+                    </div>
+                    <span class="item-summary-name">{{ item.name || 'Unnamed Item' }}</span>
+                  </div>
                   <span class="item-summary-price">{{ getItemPriceDisplay(item) }}</span>
                 </div>
               </div>
@@ -418,7 +424,7 @@
                   <span class="plan-badge-limits">{{ plan.maxTables }} tables · {{ plan.maxStaff }} staff</span>
                 </div>
                 <div class="plan-badge-price">
-                  <span class="badge-price-amount">{{ plan.price }}</span>
+                  <span class="badge-price-amount">{{ getPlanPrice(plan.basePrice) }}</span>
                   <span class="badge-price-unit">DT/mo</span>
                 </div>
               </div>
