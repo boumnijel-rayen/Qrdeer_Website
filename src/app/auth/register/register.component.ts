@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -136,7 +136,7 @@ export class RegisterComponent implements AfterViewInit, OnDestroy {
   // Error handling
   stepErrors: { [key: number]: string } = {};
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
     // Initialize map on first load
@@ -406,11 +406,8 @@ export class RegisterComponent implements AfterViewInit, OnDestroy {
     setTimeout(() => {
       this.isSubmitting = false;
       this.submitSuccess = true;
-      // Redirect to login after 2.5 seconds
-      setTimeout(() => {
-        this.router.navigate(['/login']);
-      }, 2500);
-    }, 2000);
+      this.cdr.detectChanges();
+    }, 500);
   }
 
   // ─── Helpers ────────────────────────────────────────────

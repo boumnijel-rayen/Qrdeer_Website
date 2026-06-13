@@ -2,6 +2,68 @@
   <!-- FORM PANEL -->
   <div class="form-panel">
     <div class="form-container">
+
+      <!-- ═══════════════ SUCCESS SCREEN ═══════════════ -->
+      <div class="success-screen" *ngIf="submitSuccess">
+        <div class="success-screen-inner">
+          <!-- Animated check circle -->
+          <div class="success-icon-wrap">
+            <div class="success-icon-ring"></div>
+            <div class="success-icon-check">
+              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+            </div>
+          </div>
+
+          <h2 class="success-title">Registration Complete!</h2>
+          <p class="success-subtitle">
+            Your account for <strong>{{ restaurantName }}</strong> has been successfully created.
+          </p>
+
+          <div class="success-info-card">
+            <div class="success-info-icon">
+              <span class="material-symbols-outlined">support_agent</span>
+            </div>
+            <div class="success-info-body">
+              <h4>What happens next?</h4>
+              <p>
+                Our team will review your information and contact you shortly to finalize your account setup.
+                We'll reach out via <strong>{{ email }}</strong> or <strong>{{ phone }}</strong>.
+              </p>
+            </div>
+          </div>
+
+          <div class="success-steps-row">
+            <div class="success-step-item">
+              <div class="success-step-num">1</div>
+              <p>Application<br>Submitted</p>
+              <span class="success-step-status done">Done</span>
+            </div>
+            <div class="success-step-connector"></div>
+            <div class="success-step-item">
+              <div class="success-step-num active">2</div>
+              <p>Account<br>Review</p>
+              <span class="success-step-status pending">In Progress</span>
+            </div>
+            <div class="success-step-connector muted"></div>
+            <div class="success-step-item muted">
+              <div class="success-step-num">3</div>
+              <p>Account<br>Activation</p>
+              <span class="success-step-status">Pending</span>
+            </div>
+          </div>
+
+          <div class="success-actions">
+            <a routerLink="/login" class="success-btn-primary">
+              <span class="material-symbols-outlined">login</span>
+              Go to Login
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════ REGISTRATION FORM (hidden on success) ═══════════════ -->
+      <ng-container *ngIf="!submitSuccess">
+
       <!-- Step Progress Bar -->
       <div class="step-progress">
         <div class="step-item" [class.active]="currentStep === 1" [class.completed]="isStepCompleted(1)" (click)="goToStep(1)">
@@ -53,12 +115,6 @@
       <div class="error-msg" [class.show]="stepErrors[currentStep]">
         <span>⚠</span>
         <span>{{ stepErrors[currentStep] }}</span>
-      </div>
-
-      <!-- Success Message -->
-      <div class="success-msg" *ngIf="submitSuccess">
-        <span>✓</span>
-        <span>Account created successfully! Redirecting to login...</span>
       </div>
 
       <!-- ═══════════════ STEP 1: General Info ═══════════════ -->
@@ -440,18 +496,18 @@
 
       <!-- Navigation Buttons -->
       <div class="step-nav">
-        <button class="btn-back" *ngIf="currentStep > 1 && !submitSuccess" (click)="prevStep()" type="button">
+        <button class="btn-back" *ngIf="currentStep > 1" (click)="prevStep()" type="button">
           ← Back
         </button>
         <div class="nav-spacer" *ngIf="currentStep === 1"></div>
 
-        <button class="btn-next" *ngIf="currentStep < 4 && !submitSuccess" (click)="nextStep()" type="button">
+        <button class="btn-next" *ngIf="currentStep < 4" (click)="nextStep()" type="button">
           Continue →
         </button>
 
         <button
           class="btn-submit"
-          *ngIf="currentStep === 4 && !submitSuccess"
+          *ngIf="currentStep === 4"
           (click)="onSubmit()"
           [class.loading]="isSubmitting"
           [disabled]="isSubmitting"
@@ -463,9 +519,12 @@
       </div>
 
       <!-- Login link -->
-      <p class="login-link" *ngIf="!submitSuccess">
+      <p class="login-link">
         Already have an account? <a routerLink="/login">Sign In →</a>
       </p>
+
+      </ng-container>
     </div>
   </div>
 </div>
+
