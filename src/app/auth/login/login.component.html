@@ -12,22 +12,23 @@
       </a>
       <div class="brand-hero">
         <h2>Elevating Hospitality Through Precision Technology.</h2>
-        <p>Manage your restaurant's orders, menus, tables, and revenue from a single powerful dashboard built for modern hospitality.</p>
+        <p>Manage your restaurant's orders, menus, tables, and revenue from a single powerful dashboard built for modern
+          hospitality.</p>
         <div class="brand-features">
-          <div class="brand-feat"><div class="feat-check">✓</div>QR-powered digital menus</div>
-          <div class="brand-feat"><div class="feat-check">✓</div>Live order management & kitchen sync</div>
-          <div class="brand-feat"><div class="feat-check">✓</div>Real-time revenue analytics</div>
-          <div class="brand-feat"><div class="feat-check">✓</div>Table & floor management</div>
+          <div class="brand-feat">
+            <div class="feat-check">✓</div>QR-powered digital menus
+          </div>
+          <div class="brand-feat">
+            <div class="feat-check">✓</div>Live order management & kitchen sync
+          </div>
+          <div class="brand-feat">
+            <div class="feat-check">✓</div>Real-time revenue analytics
+          </div>
+          <div class="brand-feat">
+            <div class="feat-check">✓</div>Table & floor management
+          </div>
         </div>
       </div>
-    </div>
-    <div class="brand-footer">
-      <div class="testimonial-mini">
-        <div class="stars-sm">★★★★★</div>
-        <p>"Since adopting Qrdeer, our sales increased by 25%. The dashboard is incredibly intuitive."</p>
-        <strong>— Bistro Italiano, Tunis 🇹🇳</strong>
-      </div>
-      <p>© 2024 Qrdeer. All rights reserved.</p>
     </div>
   </div>
 
@@ -39,10 +40,7 @@
         <p>New to Qrdeer? <a routerLink="/register">Create a free account →</a></p>
       </div>
 
-      <div class="auth-tabs">
-        <button class="auth-tab active">Sign In</button>
-        <a routerLink="/register" class="auth-tab">Create Account</a>
-      </div>
+
 
       <!-- LOGIN -->
       <div *ngIf="activeTab === 'login'" id="login-form" class="auth-content">
@@ -56,7 +54,8 @@
             <label>Email Address</label>
             <div class="input-wrap">
               <span class="input-icon">✉</span>
-              <input type="email" [(ngModel)]="email" name="email" placeholder="admin@qrdeer.com" autocomplete="email" [disabled]="isLoading" />
+              <input type="email" [(ngModel)]="email" name="email" placeholder="admin@qrdeer.com" autocomplete="email"
+                [disabled]="isLoading" />
             </div>
           </div>
 
@@ -64,7 +63,8 @@
             <label>Password</label>
             <div class="input-wrap">
               <span class="input-icon">🔒</span>
-              <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Enter your password" autocomplete="current-password" [disabled]="isLoading" />
+              <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password"
+                placeholder="Enter your password" autocomplete="current-password" [disabled]="isLoading" />
               <button class="toggle-pw" (click)="togglePassword()" type="button" id="pw-toggle">
                 {{ showPassword ? '🙈' : '👁' }}
               </button>
@@ -84,12 +84,7 @@
           </button>
         </form>
 
-        <div class="or-divider">or continue with</div>
 
-        <div class="social-btns">
-          <button class="social-btn" type="button">🇬 Google</button>
-          <button class="social-btn" type="button">𝕗 Facebook</button>
-        </div>
 
         <div class="demo-note">
           🎯 <strong>Demo credentials:</strong><br>
