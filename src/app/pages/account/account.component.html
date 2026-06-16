@@ -1,7 +1,9 @@
 <section class="account-page">
   <div class="account-header">
-    <span class="section-label">ACCOUNT SETTINGS</span>
-    <h2 class="section-title">Your Profile</h2>
+    <div>
+      <h2 class="section-title">Your Profile</h2>
+      <p class="section-subtitle">Manage your personal information and preferences.</p>
+    </div>
   </div>
 
   <div class="account-grid">
@@ -72,16 +74,7 @@
             <span class="toggle-slider"></span>
           </label>
         </div>
-        <div class="setting-item">
-          <div>
-            <p class="setting-name">Sound Alerts</p>
-            <p class="setting-desc">Play sound for new orders</p>
-          </div>
-          <label class="toggle">
-            <input type="checkbox" checked />
-            <span class="toggle-slider"></span>
-          </label>
-        </div>
+
         <div class="setting-item">
           <div>
             <p class="setting-name">Dark Mode</p>
@@ -95,11 +88,16 @@
       </div>
 
       <div class="danger-zone">
-        <h4>Session</h4>
-        <p>Sign out of your account on this device.</p>
-        <button class="logout-btn" (click)="logout()">
-          <span class="material-symbols-outlined">logout</span> Sign Out
-        </button>
+        <h4>Security & Session</h4>
+        <p>Manage your account security and active sessions.</p>
+        <div class="session-actions">
+          <button class="change-pwd-btn" routerLink="/account/password">
+            <span class="material-symbols-outlined">lock_reset</span> Change Password
+          </button>
+          <button class="logout-btn" (click)="logout()">
+            <span class="material-symbols-outlined">logout</span> Sign Out
+          </button>
+        </div>
       </div>
     </div>
   </div>

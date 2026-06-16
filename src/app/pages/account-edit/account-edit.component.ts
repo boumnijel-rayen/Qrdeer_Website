@@ -90,28 +90,6 @@ import { AuthService } from '../../auth/auth.service';
             </div>
           </div>
 
-          <div class="form-divider"></div>
-
-          <h3 class="form-section-title">Security</h3>
-
-          <div class="form-group">
-            <label for="edit-password">New Password</label>
-            <div class="input-wrap">
-              <span class="material-symbols-outlined input-icon">lock</span>
-              <input id="edit-password" [type]="showPassword ? 'text' : 'password'" [(ngModel)]="profile.newPassword" name="newPassword" placeholder="Leave blank to keep current" />
-              <button type="button" class="toggle-pass-btn" (click)="showPassword = !showPassword">
-                <span class="material-symbols-outlined">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="edit-confirm">Confirm New Password</label>
-            <div class="input-wrap">
-              <span class="material-symbols-outlined input-icon">lock_reset</span>
-              <input id="edit-confirm" [type]="showPassword ? 'text' : 'password'" [(ngModel)]="profile.confirmPassword" name="confirmPassword" placeholder="Repeat new password" />
-            </div>
-          </div>
 
           @if (successMessage) {
             <div class="success-banner">
@@ -196,6 +174,8 @@ import { AuthService } from '../../auth/auth.service';
     .input-icon { position: absolute; left: 16px; font-size: 20px; color: #94a3b8; pointer-events: none; }
     .input-wrap input, .input-wrap select { width: 100%; padding: 14px 16px 14px 48px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 0.9375rem; color: var(--on-surface); background: #f8fafc; transition: border-color 0.2s, background 0.2s; }
     .input-wrap input:focus, .input-wrap select:focus { outline: none; border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(155,35,48,0.08); }
+    
+    .input-wrap select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 16px center; background-size: 16px; padding-right: 40px; cursor: pointer; }
 
     .toggle-pass-btn { position: absolute; right: 14px; background: none; border: none; cursor: pointer; color: #94a3b8; display: flex; align-items: center; padding: 4px; }
     .toggle-pass-btn:hover { color: var(--primary); }

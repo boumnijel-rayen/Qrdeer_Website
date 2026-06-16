@@ -20,6 +20,8 @@ import { StaffEditComponent } from './pages/staff-edit/staff-edit.component';
 import { AccountEditComponent } from './pages/account-edit/account-edit.component';
 import { SaleDetailsComponent } from './pages/sale-details/sale-details.component';
 import { Notifications } from './pages/notifications/notifications';
+import { ChangePassword } from './pages/change-password/change-password';
+import { PasswordOtp } from './pages/password-otp/password-otp';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent, pathMatch: 'full' },
@@ -45,6 +47,8 @@ export const routes: Routes = [
       { path: 'sales/:id', component: SaleDetailsComponent },
       { path: 'account', component: AccountComponent },
       { path: 'account/edit', component: AccountEditComponent },
+      { path: 'account/password', component: ChangePassword },
+      { path: 'account/password/verify', component: PasswordOtp },
       { path: 'notifications', component: Notifications },
     ]
   },
