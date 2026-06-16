@@ -79,18 +79,34 @@
 
     <!-- Payment Summary -->
     <div class="summary-section">
-      <div class="summary-card">
-        <h3>Payment Summary</h3>
-        <div class="summary-rows">
-          <div class="summary-row total-row">
-            <span>TOTAL</span>
-            <span class="total-amount">{{ order.total }}</span>
+      <div class="info-card payment-card">
+        <h4 class="card-title">Payment Details</h4>
+        <div class="payment-method-row">
+          <div class="payment-icon">
+            <span class="material-symbols-outlined">payments</span>
+          </div>
+          <div>
+            <p class="info-label">Method</p>
+            <p class="info-value">Pending (Cash)</p>
           </div>
         </div>
-        <button class="receipt-btn">
-          <span class="material-symbols-outlined">print</span> Print Receipt
+        <div class="payment-amount-block">
+          <p class="payment-amount-label">Amount Collected</p>
+          <p class="payment-amount-value">{{ order.total }}</p>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions-card">
+        <h4 class="card-title">Actions</h4>
+        <button class="action-btn print-btn">
+          <span class="material-symbols-outlined">print</span>
+          Print Receipt
         </button>
-        <button class="cancel-btn">Cancel Order</button>
+        <button class="action-btn cancel-btn">
+          <span class="material-symbols-outlined">cancel</span>
+          Cancel Order
+        </button>
       </div>
     </div>
   </div>

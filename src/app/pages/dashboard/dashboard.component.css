@@ -11,17 +11,20 @@
 }
 
 .page-title {
-    font-size: 2.75rem;
-    font-weight: 800;
+    font-size: 1.875rem;
+    font-weight: 900;
     letter-spacing: -0.02em;
     color: var(--on-background);
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .page-subtitle {
-    font-size: 1.1rem;
-    color: var(--secondary);
-    font-weight: 300;
-    margin-top: 8px;
+    color: #94a3b8;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-top: 4px;
 }
 
 .text-accent {

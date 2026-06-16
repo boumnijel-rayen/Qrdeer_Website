@@ -191,16 +191,6 @@ interface Transaction {
                 <span class="material-symbols-outlined">print</span>
                 Print Receipt
               </button>
-              <button class="action-btn pdf-btn">
-                <span class="material-symbols-outlined">picture_as_pdf</span>
-                Export PDF
-              </button>
-              @if (transaction.statusColor !== 'red') {
-                <button class="action-btn refund-btn">
-                  <span class="material-symbols-outlined">undo</span>
-                  Issue Refund
-                </button>
-              }
             </div>
           </div>
         </div>
@@ -367,7 +357,24 @@ export class SaleDetailsComponent implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    this.transaction = this.allTransactions.find(t => t.id === decodeURIComponent(id || '')) || null;
+    const decodedId = decodeURIComponent(id || '');
+    
+    this.transaction = this.allTransactions.find(t => t.id === decodedId) || null;
+    
+    if (!this.transaction && decodedId) {
+      // Mock it on the fly if not found in the hardcoded list
+      this.transaction = {
+        id: decodedId, date: 'Oct 25, 2023', time: '12:00 PM', table: 'Table XX',
+        items: '5 items', amount: '150.000 TND', status: 'Completed', statusColor: 'green',
+        server: 'Auto-Generated', paymentMethod: 'Credit Card',
+        subtotal: 130.000, tip: 20.000, total: 150.000,
+        orderItems: [
+          { name: 'Dynamic Item 1', category: 'Main', qty: 2, unitPrice: 50.000, total: 100.000 },
+          { name: 'Dynamic Item 2', category: 'Beverage', qty: 1, unitPrice: 30.000, total: 30.000 }
+        ]
+      };
+    }
+    
     if (!this.transaction) {
       this.router.navigate(['/sales']);
     }
