@@ -2,55 +2,79 @@
   <!-- Header -->
   <div class="sales-header">
     <div>
-      <h2 class="sales-title">Order History</h2>
-      <p class="sales-subtitle">Track real-time performance, review transaction history, and export financial summaries for your establishment.</p>
+      <h2 class="sales-title">
+        Order History
+      </h2>
+      <p class="sales-subtitle">Manage incoming and active requests in real-time.</p>
     </div>
     <div class="sales-actions">
-      <button class="date-btn"><span class="material-symbols-outlined">calendar_month</span> Last 30 Days</button>
-      <button class="export-btn"><span class="material-symbols-outlined">download</span> Export Reports</button>
-    </div>
-  </div>
-
-  <!-- Summary Cards -->
-  <div class="summary-cards">
-    <div class="summary-card revenue-card">
-      <div class="sc-inner">
-        <span class="sc-label">FINANCIAL OVERVIEW</span>
-        <h3 class="sc-subtitle">Total Revenue</h3>
-        <div class="sc-value-row">
-          <span class="sc-value">12,840.00</span>
-          <span class="sc-unit">TND</span>
+      <div class="period-selector-wrapper">
+        <div class="period-selector" (click)="togglePeriodDropdown($event)">
+          <span class="material-symbols-outlined period-icon">calendar_today</span>
+          <span class="period-label">{{ selectedPeriod.label }}</span>
+          <span class="material-symbols-outlined period-chevron" [class.open]="periodDropdownOpen">expand_more</span>
         </div>
+        @if (periodDropdownOpen) {
+        <div class="period-dropdown" (click)="$event.stopPropagation()">
+          @if (!showCustomDatePicker) {
+            @for (period of periods; track period.key) {
+            <button class="period-option" [class.active]="selectedPeriod.key === period.key" (click)="selectPeriod(period)">
+              <span class="material-symbols-outlined period-option-icon">{{ period.icon }}</span>
+              <span>{{ period.label }}</span>
+            </button>
+            }
+          } @else {
+            <div class="custom-date-container">
+              <h4 class="custom-date-title">Custom Range</h4>
+              <div class="custom-date-inputs">
+                <div class="input-group">
+                  <label>Start Date</label>
+                  <input type="date" [(ngModel)]="customStartDate" (change)="onCustomDateChange()">
+                </div>
+                <div class="input-group">
+                  <label>End Date</label>
+                  <input type="date" [(ngModel)]="customEndDate" (change)="onCustomDateChange()">
+                </div>
+              </div>
+              @if (dateError) {
+                <div class="date-error">{{ dateError }}</div>
+              }
+              <div class="custom-date-actions">
+                <button class="cancel-btn" (click)="cancelCustomDate()">Cancel</button>
+                <button class="apply-btn" (click)="closeDropdowns()">Done</button>
+              </div>
+            </div>
+          }
+        </div>
+        }
       </div>
-      <div class="sc-trend positive">
-        <span class="material-symbols-outlined">trending_up</span>
-        <span>+14.2% from last month</span>
-      </div>
-      <div class="sc-bg-glow"></div>
-    </div>
-
-    <div class="summary-card">
-      <span class="material-symbols-outlined sc-icon">analytics</span>
-      <h3 class="sc-subtitle">Avg. Ticket</h3>
-      <p class="sc-mid-value">48.50 <span class="sc-small">TND</span></p>
-      <p class="sc-note">Based on 264 orders this period.</p>
-    </div>
-
-    <div class="summary-card dark-card">
-      <span class="material-symbols-outlined sc-icon">table_restaurant</span>
-      <h3 class="sc-subtitle">Peak Performance</h3>
-      <p class="sc-mid-value">Table 08</p>
-      <p class="sc-note">Generated 1,200 TND this month.</p>
+      <button class="export-btn">
+        <span class="material-symbols-outlined">table_view</span> 
+        Export to Excel
+      </button>
     </div>
   </div>
+
 
   <!-- Table -->
   <div class="transactions-card">
     <div class="table-header">
       <h4>Recent Transactions</h4>
       <div class="table-actions">
-        <button class="t-btn"><span class="material-symbols-outlined">filter_list</span></button>
-        <button class="t-btn"><span class="material-symbols-outlined">more_vert</span></button>
+        <div class="filter-dropdown-wrapper">
+          <button class="t-btn" [class.active]="selectedFilter !== 'All'" (click)="toggleFilterDropdown($event)">
+            <span class="material-symbols-outlined">filter_list</span>
+          </button>
+          @if (filterDropdownOpen) {
+            <div class="filter-dropdown-menu" (click)="$event.stopPropagation()">
+              @for (option of filterOptions; track option) {
+                <button class="filter-option" [class.active]="selectedFilter === option" (click)="selectFilter(option)">
+                  {{ option }}
+                </button>
+              }
+            </div>
+          }
+        </div>
       </div>
     </div>
 
@@ -68,7 +92,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (tx of transactions; track tx.id) {
+          @for (tx of paginatedTransactions; track tx.id) {
             <tr class="tx-row">
               <td class="tx-id">{{ tx.id }}</td>
               <td>
@@ -97,43 +121,16 @@
     </div>
 
     <div class="pagination">
-      <p class="page-info">Showing <strong>1 - 25</strong> of 264 orders</p>
+      <p class="page-info">Showing <strong>{{ startItemIndex }} - {{ endItemIndex }}</strong> of {{ filteredTransactions.length }} orders</p>
       <div class="page-buttons">
-        <button class="pg-btn"><span class="material-symbols-outlined">chevron_left</span></button>
-        @for (p of [1, 2, 3]; track p) {
-          <button class="pg-btn" [class.active]="p === currentPage">{{ p }}</button>
+        <button class="pg-btn" (click)="previousPage()" [disabled]="currentPage === 1"><span class="material-symbols-outlined">chevron_left</span></button>
+        @for (p of pagesArray; track p) {
+          <button class="pg-btn" [class.active]="p === currentPage" (click)="goToPage(p)">{{ p }}</button>
         }
-        <button class="pg-btn"><span class="material-symbols-outlined">chevron_right</span></button>
+        <button class="pg-btn" (click)="nextPage()" [disabled]="currentPage === totalPages"><span class="material-symbols-outlined">chevron_right</span></button>
       </div>
     </div>
   </div>
 
-  <!-- Export Section -->
-  <div class="export-section">
-    <div class="export-text">
-      <h3>Export Financial Statements</h3>
-      <p>Need data for your accountant? Generate comprehensive CSV or PDF reports including server performance and inventory deductions.</p>
-      <div class="export-buttons">
-        <button class="exp-btn">
-          <div class="exp-icon red"><span class="material-symbols-outlined">picture_as_pdf</span></div>
-          <div>
-            <p class="exp-label">DOWNLOAD PDF</p>
-            <p class="exp-desc">Summary report</p>
-          </div>
-        </button>
-        <button class="exp-btn">
-          <div class="exp-icon green"><span class="material-symbols-outlined">table_view</span></div>
-          <div>
-            <p class="exp-label">EXPORT CSV</p>
-            <p class="exp-desc">Raw transaction data</p>
-          </div>
-        </button>
-      </div>
-    </div>
-    <div class="export-visual">
-      <div class="visual-wrap">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaTB-qUYq9b1X7ukspdHLlkI_ZLjLGLSyeogmkn4zzhFMxrdryuYCYDavZHWPQAciUB8GekyezwTXOiGlZMI_geKZ9T-vWQ0MeO2BL5u_sdTejD7wDE_cmDwHlT8SU2qjAoaz3whnF8U6d366Xb0xsmqIL4Hh-93_2iUXla9PIcfK5ZaNpPL_u23PqpMT2dRirsDq39cT_0yOw1GDtSxA_s54r96NoDvUD5pYmbD_DDeMEqJziyQ-pMWI7QnFue9ESgKGFTmbazSc" alt="Financial Dashboard" />
-      </div>
-    </div>
-  </div>
+
 </section>
