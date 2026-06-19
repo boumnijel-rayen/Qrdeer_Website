@@ -24,7 +24,7 @@ export class SidebarComponent {
     { icon: 'restaurant', label: 'Tables', route: '/tables' },
     { icon: 'bar_chart', label: 'Sales', route: '/sales' },
     { icon: 'person', label: 'Account', route: '/account' },
-    { icon: 'menu_book', label: 'Menu Management', route: '/dashboard' },
+    { icon: 'menu_book', label: 'Menu Management', route: '/menu' },
     { icon: 'group', label: 'Staff', route: '/staff' },
     { icon: 'receipt_long', label: 'Billing & Invoices', route: '/dashboard' },
   ];

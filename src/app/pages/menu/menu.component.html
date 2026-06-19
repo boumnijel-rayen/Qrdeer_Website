@@ -1,0 +1,430 @@
+<section class="menu-page">
+  <!-- Header -->
+  <div class="menu-header">
+    <div class="header-left">
+      <span class="section-label">MENU BUILDER</span>
+      <h2 class="section-title">Menu Management</h2>
+    </div>
+    <div class="header-right">
+      <div class="mode-toggle">
+        <button class="mode-btn" [class.active]="mode === 'preview'" (click)="setMode('preview')">
+          <span class="material-symbols-outlined">visibility</span>
+          Preview
+        </button>
+        <button class="mode-btn" [class.active]="mode === 'edit'" (click)="setMode('edit')">
+          <span class="material-symbols-outlined">edit</span>
+          Edit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-chip">
+      <span class="material-symbols-outlined stat-icon">category</span>
+      <span class="stat-value">{{ categories.length }}</span>
+      <span class="stat-label">Categories</span>
+    </div>
+    <div class="stat-chip">
+      <span class="material-symbols-outlined stat-icon">restaurant_menu</span>
+      <span class="stat-value">{{ getTotalItems() }}</span>
+      <span class="stat-label">Items</span>
+    </div>
+    <div class="stat-chip available-chip">
+      <span class="material-symbols-outlined stat-icon">check_circle</span>
+      <span class="stat-value">{{ getTotalAvailable() }}</span>
+      <span class="stat-label">Available</span>
+    </div>
+    <div class="stat-chip unavailable-chip">
+      <span class="material-symbols-outlined stat-icon">cancel</span>
+      <span class="stat-value">{{ getTotalItems() - getTotalAvailable() }}</span>
+      <span class="stat-label">Unavailable</span>
+    </div>
+    <div class="search-box">
+      <span class="material-symbols-outlined">search</span>
+      <input type="text" placeholder="Search menu items..." [(ngModel)]="searchQuery">
+      @if (searchQuery) {
+      <button class="clear-search" (click)="searchQuery = ''">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+      }
+    </div>
+  </div>
+
+  <!-- Categories List -->
+  <div class="categories-list">
+    @for (cat of filteredCategories; track trackByCategoryId($index, cat)) {
+    <div class="category-section" [class.drag-over]="dragOverCategoryId === cat.id && dragType === 'category'"
+      [attr.draggable]="mode === 'edit'" (dragstart)="mode === 'edit' ? onCategoryDragStart($event, cat) : null"
+      (dragover)="mode === 'edit' ? onCategoryDragOver($event, cat) : null"
+      (drop)="mode === 'edit' ? onCategoryDrop($event, cat) : null" (dragend)="onDragEnd()">
+      <!-- Category Header -->
+      <div class="category-header" (click)="toggleCategory(cat.id)">
+        @if (mode === 'edit') {
+        <div class="drag-handle">
+          <span class="material-symbols-outlined">drag_indicator</span>
+        </div>
+        }
+        <div class="category-info">
+          <div class="category-title-row">
+            <h3 class="category-name">{{ cat.name }}</h3>
+            <span class="item-count">{{ getItemCount(cat) }} items</span>
+            <span class="available-count">{{ getAvailableCount(cat) }} available</span>
+          </div>
+          @if (cat.description) {
+          <p class="category-description">{{ cat.description }}</p>
+          }
+        </div>
+        <div class="category-actions">
+          @if (mode === 'edit') {
+          <div class="menu-container">
+            <button class="icon-btn" (click)="toggleMenu('cat-' + cat.id, $event)">
+              <span class="material-symbols-outlined">more_vert</span>
+            </button>
+            @if (openMenuId === 'cat-' + cat.id) {
+            <div class="dropdown-menu">
+              <button class="dropdown-item" (click)="openEditCategory(cat, $event)">
+                <span class="material-symbols-outlined">edit</span>
+                Edit Category
+              </button>
+              <button class="dropdown-item delete-item" (click)="confirmDeleteCategory(cat, $event)">
+                <span class="material-symbols-outlined">delete</span>
+                Delete Category
+              </button>
+            </div>
+            }
+          </div>
+          }
+          <button class="expand-btn" [class.expanded]="isCategoryExpanded(cat.id)">
+            <span class="material-symbols-outlined">expand_more</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Category Items -->
+      @if (isCategoryExpanded(cat.id)) {
+      <div class="category-items" [class.preview-items]="mode === 'preview'">
+        @if (mode === 'edit') {
+        <div class="add-item-card" (click)="openAddItem(cat.id)">
+          <div class="add-item-icon">
+            <span class="material-symbols-outlined">add</span>
+          </div>
+          <span class="add-item-text">Add Item</span>
+        </div>
+        }
+        @for (item of getSortedItems(cat); track trackByItemId($index, item)) {
+        <!-- PREVIEW MODE ITEM -->
+        @if (mode === 'preview') {
+        <div class="preview-item-card" [class.unavailable]="!item.available">
+          @if (item.image) {
+          <div class="preview-item-image">
+            <img [src]="item.image" [alt]="item.name">
+          </div>
+          }
+          <div class="preview-item-content">
+            <div class="preview-item-header">
+              <div class="preview-title-wrap" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <h4 class="preview-item-name" style="margin: 0;">{{ item.name }}</h4>
+                @if (!item.available) {
+                <span class="unavailable-badge">Unavailable</span>
+                }
+              </div>
+              <div class="menu-container">
+                <button class="icon-btn" (click)="toggleMenu('preview-' + item.id, $event)">
+                  <span class="material-symbols-outlined">more_vert</span>
+                </button>
+                @if (openMenuId === 'preview-' + item.id) {
+                <div class="dropdown-menu">
+                  <button class="dropdown-item" (click)="openEditItem(cat.id, item, $event)">
+                    <span class="material-symbols-outlined">edit</span>
+                    Edit Item
+                  </button>
+                  <button class="dropdown-item" (click)="toggleAvailability(cat.id, item, $event)">
+                    <span class="material-symbols-outlined">
+                      {{ item.available ? 'visibility_off' : 'visibility' }}
+                    </span>
+                    {{ item.available ? 'Mark Unavailable' : 'Mark Available' }}
+                  </button>
+                  <button class="dropdown-item delete-item" (click)="confirmDeleteItem(cat.id, item, $event)">
+                    <span class="material-symbols-outlined">delete</span>
+                    Delete Item
+                  </button>
+                </div>
+                }
+              </div>
+            </div>
+            <p class="preview-item-desc">{{ item.description }}</p>
+            <div class="preview-item-pricing">
+              @if (item.pricingType === 'single') {
+              <span class="price-tag">{{ formatPrice(item.price) }} DT</span>
+              } @else {
+              <div class="size-prices">
+                @for (size of item.sizes; track size.name) {
+                <div class="size-price-row">
+                  <span class="size-name">{{ size.name }}</span>
+                  <span class="size-dots"></span>
+                  <span class="size-price">{{ formatPrice(size.price) }} DT</span>
+                </div>
+                }
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+        }
+
+        <!-- EDIT MODE ITEM -->
+        @if (mode === 'edit') {
+        <div class="edit-item-card" [class.unavailable-edit]="!item.available"
+          [class.drag-over-item]="dragOverItemId === item.id && dragType === 'item'" draggable="true"
+          (dragstart)="onItemDragStart($event, cat.id, item)" (dragover)="onItemDragOver($event, cat.id, item)"
+          (drop)="onItemDrop($event, cat.id, item)" (dragend)="onDragEnd()">
+          <div class="item-drag-handle">
+            <span class="material-symbols-outlined">drag_indicator</span>
+          </div>
+          <div class="edit-item-thumb">
+            @if (item.image) {
+            <img [src]="item.image" [alt]="item.name">
+            } @else {
+            <div class="edit-item-thumb-placeholder">
+              <span class="material-symbols-outlined">restaurant</span>
+            </div>
+            }
+          </div>
+          <div class="edit-item-info">
+            <div class="edit-item-top">
+              <h4 class="edit-item-name">{{ item.name }}</h4>
+              <div class="edit-item-badges">
+                @if (item.pricingType === 'single') {
+                <span class="price-badge">{{ formatPrice(item.price) }} DT</span>
+                } @else {
+                <span class="multi-price-badge">{{ item.sizes.length }} sizes</span>
+                }
+                <span class="availability-badge" [class.available]="item.available"
+                  [class.not-available]="!item.available">
+                  {{ item.available ? 'Available' : 'Unavailable' }}
+                </span>
+              </div>
+            </div>
+            <p class="edit-item-desc">{{ item.description }}</p>
+          </div>
+          <div class="edit-item-actions">
+            <div class="menu-container">
+              <button class="icon-btn" (click)="toggleMenu('item-' + item.id, $event)">
+                <span class="material-symbols-outlined">more_vert</span>
+              </button>
+              @if (openMenuId === 'item-' + item.id) {
+              <div class="dropdown-menu">
+                <button class="dropdown-item" (click)="openEditItem(cat.id, item, $event)">
+                  <span class="material-symbols-outlined">edit</span>
+                  Edit Item
+                </button>
+                <button class="dropdown-item" (click)="toggleAvailability(cat.id, item, $event)">
+                  <span class="material-symbols-outlined">
+                    {{ item.available ? 'visibility_off' : 'visibility' }}
+                  </span>
+                  {{ item.available ? 'Mark Unavailable' : 'Mark Available' }}
+                </button>
+                <button class="dropdown-item delete-item" (click)="confirmDeleteItem(cat.id, item, $event)">
+                  <span class="material-symbols-outlined">delete</span>
+                  Delete Item
+                </button>
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+        }
+        }
+      </div>
+      }
+    </div>
+    }
+
+    <!-- Add Category Card (edit mode only) -->
+    @if (mode === 'edit') {
+    <div class="add-category-card" (click)="openAddCategory()">
+      <div class="add-category-icon">
+        <span class="material-symbols-outlined">add</span>
+      </div>
+      <div class="add-category-text">
+        <p class="add-category-title">Add Category</p>
+        <p class="add-category-desc">Create a new menu section like Starters, Mains, or Drinks</p>
+      </div>
+    </div>
+    }
+  </div>
+</section>
+
+<!-- ═══════════════════ CATEGORY MODAL ═══════════════════ -->
+@if (showCategoryModal) {
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>{{ editingCategory ? 'Edit Category' : 'New Category' }}</h3>
+      <button class="modal-close" (click)="showCategoryModal = false">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Category Name</label>
+        <input class="form-input" type="text" placeholder="e.g. Starters, Main Courses..."
+          [(ngModel)]="categoryForm.name" autofocus>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description <span class="optional">(optional)</span></label>
+        <textarea class="form-textarea" placeholder="A short description of this category..."
+          [(ngModel)]="categoryForm.description" rows="3"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" (click)="showCategoryModal = false">Cancel</button>
+      <button class="btn-primary" (click)="saveCategory()" [disabled]="!categoryForm.name.trim()">
+        {{ editingCategory ? 'Save Changes' : 'Create Category' }}
+      </button>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ═══════════════════ ITEM MODAL ═══════════════════ -->
+@if (showItemModal) {
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-card modal-large">
+    <div class="modal-header">
+      <h3>{{ editingItem ? 'Edit Item' : 'New Menu Item' }}</h3>
+      <button class="modal-close" (click)="showItemModal = false">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group flex-1">
+          <label class="form-label">Item Name</label>
+          <input class="form-input" type="text" placeholder="e.g. Grilled Salmon" [(ngModel)]="itemForm.name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Availability</label>
+          <button class="availability-toggle" [class.is-available]="itemForm.available"
+            (click)="itemForm.available = !itemForm.available">
+            <span class="material-symbols-outlined">
+              {{ itemForm.available ? 'check_circle' : 'cancel' }}
+            </span>
+            {{ itemForm.available ? 'Available' : 'Unavailable' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-textarea" placeholder="Describe the dish, ingredients, preparation..."
+          [(ngModel)]="itemForm.description" rows="3"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Item Image <span class="optional">(optional)</span></label>
+        <div class="image-upload-container">
+          @if (itemForm.image) {
+          <div class="image-preview">
+            <img [src]="itemForm.image" alt="Item preview">
+            <div class="image-actions">
+              <button class="btn-icon danger" (click)="removeImage()" title="Remove Image">
+                <span class="material-symbols-outlined">delete</span>
+              </button>
+            </div>
+          </div>
+          } @else {
+          <div class="image-upload-box" (click)="fileInput.click()">
+            <span class="material-symbols-outlined">add_photo_alternate</span>
+            <p>Click to browse for an image</p>
+          </div>
+          }
+          <input #fileInput type="file" accept="image/*" class="hidden-input" (change)="onImageSelected($event)">
+        </div>
+      </div>
+
+      <!-- Pricing Section -->
+      <div class="pricing-section">
+        <label class="form-label">Pricing</label>
+        <div class="pricing-type-toggle">
+          <button class="pricing-type-btn" [class.active]="itemForm.pricingType === 'single'"
+            (click)="itemForm.pricingType = 'single'">
+            <span class="material-symbols-outlined">payments</span>
+            Single Price
+          </button>
+          <button class="pricing-type-btn" [class.active]="itemForm.pricingType === 'multiple'"
+            (click)="itemForm.pricingType = 'multiple'">
+            <span class="material-symbols-outlined">format_list_numbered</span>
+            Multiple Sizes
+          </button>
+        </div>
+
+        @if (itemForm.pricingType === 'single') {
+        <div class="form-group">
+          <label class="form-label">Price</label>
+          <div class="price-input-wrap">
+            <span class="currency-symbol">DT</span>
+            <input class="form-input price-input" type="number" min="0" step="0.01" placeholder="0.00"
+              [(ngModel)]="itemForm.price">
+          </div>
+        </div>
+        }
+
+        @if (itemForm.pricingType === 'multiple') {
+        <div class="sizes-list">
+          @for (size of itemForm.sizes; track trackBySizeIndex($index); let i = $index) {
+          <div class="size-row">
+            <input class="form-input size-name-input" type="text" placeholder="Size name (e.g. Small)"
+              [(ngModel)]="size.name">
+            <div class="price-input-wrap">
+              <span class="currency-symbol">DT</span>
+              <input class="form-input price-input" type="number" min="0" step="0.01" placeholder="0.00"
+                [(ngModel)]="size.price">
+            </div>
+            <button class="remove-size-btn" (click)="removeSize(i)">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+          }
+          <button class="add-size-btn" (click)="addSize()">
+            <span class="material-symbols-outlined">add</span>
+            Add Size
+          </button>
+        </div>
+        }
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" (click)="showItemModal = false">Cancel</button>
+      <button class="btn-primary" (click)="saveItem()" [disabled]="!itemForm.name.trim()">
+        {{ editingItem ? 'Save Changes' : 'Add Item' }}
+      </button>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ═══════════════════ DELETE MODAL ═══════════════════ -->
+@if (showDeleteModal && deleteTarget) {
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-card modal-delete">
+    <div class="delete-icon-wrap">
+      <span class="material-symbols-outlined">warning</span>
+    </div>
+    <h3 class="delete-title">Delete {{ deleteTarget.type === 'category' ? 'Category' : 'Item' }}</h3>
+    <p class="delete-message">
+      Are you sure you want to delete <strong>{{ deleteTarget.name }}</strong>?
+      @if (deleteTarget.type === 'category') {
+      This will also remove all items within this category.
+      }
+      This action cannot be undone.
+    </p>
+    <div class="modal-footer delete-footer">
+      <button class="btn-ghost" (click)="showDeleteModal = false">Cancel</button>
+      <button class="btn-danger" (click)="executeDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+}

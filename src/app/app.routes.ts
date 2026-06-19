@@ -22,6 +22,7 @@ import { SaleDetailsComponent } from './pages/sale-details/sale-details.componen
 import { Notifications } from './pages/notifications/notifications';
 import { ChangePassword } from './pages/change-password/change-password';
 import { PasswordOtp } from './pages/password-otp/password-otp';
+import { MenuComponent } from './pages/menu/menu.component';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent, pathMatch: 'full' },
@@ -50,6 +51,7 @@ export const routes: Routes = [
       { path: 'account/password', component: ChangePassword },
       { path: 'account/password/verify', component: PasswordOtp },
       { path: 'notifications', component: Notifications },
+      { path: 'menu', component: MenuComponent },
     ]
   },
   { path: '**', redirectTo: '' },
