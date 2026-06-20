@@ -2,7 +2,7 @@ import { Component, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import * as L from 'leaflet';
+import { GoogleMap, MapMarker } from '@angular/google-maps';
 
 interface SizePrice {
   size: string;
@@ -36,18 +36,15 @@ interface SubscriptionPlan {
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, GoogleMap, MapMarker],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-export class RegisterComponent implements AfterViewInit, OnDestroy {
+export class RegisterComponent {
   currentStep = 1;
   totalSteps = 4;
   stepDirection: 'next' | 'prev' = 'next';
   animating = false;
-  
-  private map: L.Map | undefined;
-  private marker: L.Marker | undefined;
 
   // Step 1: General Information
   restaurantName = '';
@@ -58,6 +55,31 @@ export class RegisterComponent implements AfterViewInit, OnDestroy {
   confirmPassword = '';
   mapLat = 36.8065;
   mapLng = 10.1815;
+
+  mapOptions: google.maps.MapOptions = {
+    center: { lat: 36.8065, lng: 10.1815 },
+    zoom: 13,
+    mapId: 'DEMO_MAP_ID'
+  };
+  markerPosition: google.maps.LatLngLiteral = { lat: 36.8065, lng: 10.1815 };
+
+  onMapClick(event: google.maps.MapMouseEvent) {
+    if (event.latLng) {
+      const pos = event.latLng.toJSON();
+      this.markerPosition = pos;
+      this.mapLat = pos.lat;
+      this.mapLng = pos.lng;
+    }
+  }
+
+  onMarkerDragEnd(event: google.maps.MapMouseEvent) {
+    if (event.latLng) {
+      const pos = event.latLng.toJSON();
+      this.markerPosition = pos;
+      this.mapLat = pos.lat;
+      this.mapLng = pos.lng;
+    }
+  }
 
   // Step 2: Menu Setup
   categories: MenuCategory[] = [];
@@ -138,65 +160,6 @@ export class RegisterComponent implements AfterViewInit, OnDestroy {
 
   constructor(private router: Router, private cdr: ChangeDetectorRef) {}
 
-  ngAfterViewInit() {
-    // Initialize map on first load
-    setTimeout(() => this.initMap(), 100);
-  }
-
-  ngOnDestroy() {
-    if (this.map) {
-      this.map.remove();
-    }
-  }
-
-  initMap() {
-    if (this.currentStep !== 1) return;
-    const mapContainer = document.getElementById('map-picker');
-    if (!mapContainer) return;
-
-    if (this.map) {
-      this.map.remove();
-      this.map = undefined;
-    }
-
-    mapContainer.innerHTML = '';
-    
-    this.map = L.map(mapContainer).setView([this.mapLat, this.mapLng], 13);
-    
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(this.map);
-
-    const iconDefault = L.icon({
-      iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-      iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-      shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    });
-    
-    this.marker = L.marker([this.mapLat, this.mapLng], { icon: iconDefault, draggable: true }).addTo(this.map);
-
-    this.map.on('click', (e: L.LeafletMouseEvent) => {
-      this.mapLat = e.latlng.lat;
-      this.mapLng = e.latlng.lng;
-      this.marker?.setLatLng(e.latlng);
-    });
-
-    this.marker.on('dragend', () => {
-      const pos = this.marker?.getLatLng();
-      if (pos) {
-        this.mapLat = pos.lat;
-        this.mapLng = pos.lng;
-      }
-    });
-
-    setTimeout(() => {
-      this.map?.invalidateSize();
-    }, 100);
-  }
 
   // ─── Navigation ─────────────────────────────────────────
 
@@ -211,9 +174,6 @@ export class RegisterComponent implements AfterViewInit, OnDestroy {
     this.currentStep = step;
     setTimeout(() => {
       this.animating = false;
-      if (step === 1) {
-        this.initMap();
-      }
     }, 400);
   }
 

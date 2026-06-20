@@ -155,13 +155,9 @@
         <div class="input-group">
           <label>Location</label>
           <div class="map-container" id="map-picker">
-            <div class="map-placeholder">
-              <div class="map-pin-icon-wrap">
-                <span class="material-symbols-outlined map-pin-icon" style="font-variation-settings: 'FILL' 1;">location_on</span>
-              </div>
-              <p>Google Maps Location Picker</p>
-              <span class="map-coords">{{ mapLat.toFixed(4) }}, {{ mapLng.toFixed(4) }}</span>
-            </div>
+            <google-map height="100%" width="100%" [options]="mapOptions" (mapClick)="onMapClick($event)">
+              <map-marker [position]="markerPosition" [options]="{ draggable: true }" (mapDragend)="onMarkerDragEnd($event)"></map-marker>
+            </google-map>
           </div>
         </div>
 

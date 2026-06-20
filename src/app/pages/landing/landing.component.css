@@ -79,7 +79,7 @@ section{padding:100px 5%}
 /* ── FEATURES ── */
 .features-bento{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:auto;gap:20px;margin-top:64px}
 /* Hero feature — large left */
-.fb-main{grid-column:span 5;background:linear-gradient(145deg,var(--primary-dark),var(--primary));border-radius:28px;padding:48px 40px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;min-height:340px;position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(155,35,48,0.25)}
+.fb-main{grid-column:span 6;background:linear-gradient(145deg,var(--primary-dark),var(--primary));border-radius:28px;padding:48px 40px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;min-height:340px;position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(155,35,48,0.25)}
 .fb-main::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.07)}
 .fb-main::after{content:'';position:absolute;bottom:-40px;left:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.05)}
 .fb-main .fb-icon{width:56px;height:56px;border-radius:16px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;margin-bottom:32px;backdrop-filter:blur(8px)}

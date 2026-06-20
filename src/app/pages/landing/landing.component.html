@@ -9,7 +9,6 @@
     <a routerLink="/pricing">Pricing</a>
     <a [routerLink]="['/']" fragment="features">Features</a>
     <a [routerLink]="['/']" fragment="how">How it works</a>
-    <a [routerLink]="['/']" fragment="testimonials">Reviews</a>
   </div>
   <div class="nav-cta">
     <ng-container *ngIf="isLoggedIn(); else publicNav">
@@ -101,7 +100,7 @@
     </div>
 
     <!-- TALL CARD 3 -->
-    <div class="fb-tall reveal">
+    <div class="fb-tall reveal" style="grid-column: span 4">
       <div>
         <div class="fb-icon"><span class="material-symbols-outlined">table_restaurant</span></div>
         <h3>Table Management</h3>
@@ -125,13 +124,6 @@
       <div class="fb-icon"><span class="material-symbols-outlined">group</span></div>
       <h3>Staff Management</h3>
       <p>Roles, permissions, and shift tracking — keep every team member accountable.</p>
-    </div>
-
-    <!-- WIDE CARD 2 -->
-    <div class="fb-wide reveal">
-      <div class="fb-icon"><span class="material-symbols-outlined">payments</span></div>
-      <h3>Payment & Receipts</h3>
-      <p>Digital receipts, split-bill support, and daily revenue summaries automatically generated.</p>
     </div>
   </div>
 </section>
@@ -206,30 +198,6 @@
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
-<section id="testimonials" class="testimonials">
-  <div style="text-align:center;max-width:700px;margin:0 auto">
-    <p class="section-label reveal">Testimonials</p>
-    <h2 class="section-title reveal">What our clients say</h2>
-  </div>
-  <div class="test-grid">
-    <div class="test-card reveal">
-      <div class="stars">★★★★★</div>
-      <p class="test-text">"Since adopting Qrdeer, we've seen a 25% increase in sales. Guests love the simplicity and instant access to the menu."</p>
-      <div class="test-author">— Bistro Italiano 🇮🇹</div>
-    </div>
-    <div class="test-card reveal">
-      <div class="stars">★★★★★</div>
-      <p class="test-text">"Qrdeer transformed the way we work. We save time and money on menu printing, and our guests love the contactless experience."</p>
-      <div class="test-author">— Café Central 🇹🇳</div>
-    </div>
-    <div class="test-card reveal">
-      <div class="stars">★★★★★</div>
-      <p class="test-text">"Real-time updates let us run flash promotions instantly. Orders during slow hours increased by 15% in the first month."</p>
-      <div class="test-author">— Hotel Radisson 🇹🇳</div>
-    </div>
-  </div>
-</section>
 
 <!-- CTA -->
 <section class="cta-section">
