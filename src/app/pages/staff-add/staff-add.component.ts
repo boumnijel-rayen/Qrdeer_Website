@@ -97,8 +97,9 @@ import { FormsModule } from '@angular/forms';
     .form-group label { display: block; font-size: 0.875rem; font-weight: 700; color: var(--on-surface); margin-bottom: 8px; }
     .form-group input, .form-group select { width: 100%; padding: 16px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 1rem; color: var(--on-surface); background: #f8fafc; transition: border-color 0.2s; }
     .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); background: white; }
+    .form-group select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 24px center; background-size: 16px; padding-right: 48px; cursor: pointer; }
     
-    .status-toggle { display: flex; gap: 12px; }
+    .status-toggle { display: flex; gap: 12px; margin-top: 20px; }
     .toggle-option input { display: none; }
     .toggle-btn { flex: 1; text-align: center; padding: 14px; border: 1px solid #e2e8f0; border-radius: 12px; font-weight: 700; color: #64748b; cursor: pointer; transition: all 0.2s; }
     .toggle-option input:checked + .toggle-btn { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(155, 35, 48, 0.2); }

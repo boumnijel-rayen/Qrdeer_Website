@@ -16,8 +16,8 @@
 .billing-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 32px;
+  align-items: center;
+  margin-bottom: 40px;
   gap: 24px;
   flex-wrap: wrap;
 }
@@ -30,11 +30,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-}
-
-.title-icon {
-  font-size: 28px;
-  color: var(--primary);
+  margin: 0;
 }
 
 .page-subtitle {
@@ -42,6 +38,7 @@
   font-size: 0.875rem;
   font-weight: 500;
   margin-top: 4px;
+  margin-bottom: 0;
 }
 
 .plan-card {

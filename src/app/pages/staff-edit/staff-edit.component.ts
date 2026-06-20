@@ -98,8 +98,9 @@ import { FormsModule } from '@angular/forms';
     .form-group label { display: block; font-size: 0.875rem; font-weight: 700; color: var(--on-surface); margin-bottom: 8px; }
     .form-group input, .form-group select { width: 100%; padding: 16px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 1rem; color: var(--on-surface); background: #f8fafc; transition: border-color 0.2s; }
     .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); background: white; }
+    .form-group select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 24px center; background-size: 16px; padding-right: 48px; cursor: pointer; }
     
-    .status-toggle { display: flex; gap: 12px; }
+    .status-toggle { display: flex; gap: 12px; margin-top: 20px; }
     .toggle-option input { display: none; }
     .toggle-btn { flex: 1; text-align: center; padding: 14px; border: 1px solid #e2e8f0; border-radius: 12px; font-weight: 700; color: #64748b; cursor: pointer; transition: all 0.2s; }
     .toggle-option input:checked + .toggle-btn { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(155, 35, 48, 0.2); }
@@ -115,10 +116,10 @@ import { FormsModule } from '@angular/forms';
     .staff-card-preview.inactive { opacity: 0.7; filter: grayscale(1); }
     
     .card-header { margin-bottom: 24px; display: flex; justify-content: center; width: 100%; }
-    .avatar-container { position: relative; width: 80px; height: 80px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .avatar-container img { width: 100%; height: 100%; object-fit: cover; }
+    .avatar-container { position: relative; width: 80px; height: 80px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; }
+    .avatar-container img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
     .initial { font-size: 2rem; font-weight: 800; color: #94a3b8; z-index: 1; }
-    .status-indicator { position: absolute; bottom: 4px; right: 4px; width: 16px; height: 16px; border-radius: 50%; background: #cbd5e1; border: 3px solid white; z-index: 2; }
+    .status-indicator { position: absolute; bottom: 2px; right: 2px; width: 18px; height: 18px; border-radius: 50%; background: #cbd5e1; border: 3px solid white; z-index: 2; }
     .status-indicator.online { background: #22c55e; }
     
     .staff-info { text-align: center; width: 100%; }

@@ -21,8 +21,10 @@ interface StaffMember {
     <section class="staff-page">
       <div class="staff-header">
         <div>
-          <span class="section-label">TEAM DIRECTORY</span>
-          <h2 class="section-title">Staff Management</h2>
+          <h2 class="staff-title">
+            Staff Management
+          </h2>
+          <p class="staff-subtitle">Manage your team members and their roles.</p>
         </div>
         <button class="add-staff-btn" routerLink="/staff/add">
           <span class="material-symbols-outlined">person_add</span>
@@ -32,10 +34,15 @@ interface StaffMember {
 
       <div class="filters-row">
         <div class="tabs">
-          <button class="tab active">All Members</button>
-          <button class="tab">Admins</button>
-          <button class="tab">Managers</button>
-          <button class="tab">Servers</button>
+          @for (role of roles; track role) {
+            <button 
+              class="tab" 
+              [class.active]="activeRole === role"
+              (click)="setRole(role)"
+            >
+              {{ role }}
+            </button>
+          }
         </div>
         <div class="search-box">
           <span class="material-symbols-outlined">search</span>
@@ -89,11 +96,12 @@ interface StaffMember {
     </section>
   `,
   styles: [`
-    .staff-page { padding: 32px 40px; max-width: 1400px; margin: 0 auto; }
+    .staff-page { padding: 40px; }
     
-    .staff-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
-    .section-label { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--primary); display: block; margin-bottom: 8px; }
-    .section-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; color: var(--on-background); }
+    .staff-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+    .staff-title { font-size: 1.875rem; font-weight: 900; letter-spacing: -0.02em; color: var(--on-background); display: flex; align-items: center; gap: 12px; margin: 0; }
+    .active-badge { font-size: 0.75rem; background: rgba(155,35,48,0.1); color: var(--primary); padding: 4px 12px; border-radius: 999px; font-weight: 700; text-transform: uppercase; }
+    .staff-subtitle { color: #94a3b8; font-size: 0.875rem; font-weight: 500; margin-top: 4px; margin-bottom: 0; }
     
     .add-staff-btn { display: flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--primary); color: white; border-radius: 12px; font-weight: 700; box-shadow: 0 8px 24px rgba(155, 35, 48, 0.2); transition: all 0.2s; }
     .add-staff-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
@@ -146,6 +154,8 @@ interface StaffMember {
 export class StaffComponent {
   searchQuery = '';
   openMenuId: number | null = null;
+  activeRole: string = 'All Members';
+  roles: string[] = ['All Members', 'Admins', 'Managers', 'Servers'];
 
   staffList: StaffMember[] = [
     { id: 1, name: 'Emma Wilson', email: 'emma@qrdeer.com', role: 'Admin', status: 'active', lastLogin: 'Just now', avatar: '' },
@@ -155,16 +165,30 @@ export class StaffComponent {
     { id: 5, name: 'Jessica Taylor', email: 'jessica@qrdeer.com', role: 'Manager', status: 'active', lastLogin: '1 hour ago', avatar: '' },
   ];
 
+  setRole(role: string) {
+    this.activeRole = role;
+  }
+
   get filteredStaffList() {
-    if (!this.searchQuery) {
-      return this.staffList;
+    let filtered = this.staffList;
+
+    if (this.activeRole !== 'All Members') {
+      const roleMatch = this.activeRole === 'Admins' ? 'Admin' : 
+                        this.activeRole === 'Managers' ? 'Manager' : 
+                        this.activeRole === 'Servers' ? 'Server' : '';
+      filtered = filtered.filter(s => s.role === roleMatch);
     }
-    const q = this.searchQuery.toLowerCase();
-    return this.staffList.filter(s => 
-      s.name.toLowerCase().includes(q) || 
-      s.email.toLowerCase().includes(q) || 
-      s.role.toLowerCase().includes(q)
-    );
+
+    if (this.searchQuery) {
+      const q = this.searchQuery.toLowerCase();
+      filtered = filtered.filter(s => 
+        s.name.toLowerCase().includes(q) || 
+        s.email.toLowerCase().includes(q) || 
+        s.role.toLowerCase().includes(q)
+      );
+    }
+
+    return filtered;
   }
 
   toggleMenu(id: number, event: Event) {
