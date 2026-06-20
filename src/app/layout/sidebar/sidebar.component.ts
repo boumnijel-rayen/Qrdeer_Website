@@ -26,7 +26,7 @@ export class SidebarComponent {
     { icon: 'person', label: 'Account', route: '/account' },
     { icon: 'menu_book', label: 'Menu Management', route: '/menu' },
     { icon: 'group', label: 'Staff', route: '/staff' },
-    { icon: 'receipt_long', label: 'Billing & Invoices', route: '/dashboard' },
+    { icon: 'receipt_long', label: 'Billing & Invoices', route: '/billing' },
   ];
 
   constructor(private authService: AuthService) {}

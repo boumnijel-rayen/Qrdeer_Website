@@ -1,0 +1,262 @@
+<section class="billing-page">
+
+  <!-- ═══════════════════ PAGE HEADER ═══════════════════ -->
+  <div class="billing-header">
+    <div class="header-info">
+      <h2 class="page-title">
+        <span class="material-symbols-outlined title-icon">receipt_long</span>
+        Billing & Invoices
+      </h2>
+      <p class="page-subtitle">Manage your subscription, payments, and invoice history.</p>
+    </div>
+  </div>
+
+  <div class="plan-card" [ngClass]="{
+    'starter-card': subscription.plan === 'Starter',
+    'pro-card': subscription.plan === 'Professional',
+    'premium-card': subscription.plan === 'Premium'
+  }" routerLink="/billing/choose-plan" style="cursor: pointer; text-decoration: none; display: block;">
+    <div class="plan-card-top">
+      <span class="plan-card-label">CURRENT PLAN</span>
+      <span class="plan-card-status">{{ subscription.status === 'Active' ? 'Active' : subscription.status }}</span>
+    </div>
+    <h3 class="plan-card-title">{{ subscription.plan }}</h3>
+    <div class="plan-card-bottom">
+      Next billing cycle: {{ subscription.nextBillingDate }}
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SEARCH & FILTERS ═══════════════════ -->
+  <div class="filters-bar">
+    <div class="search-wrap">
+      <span class="material-symbols-outlined search-icon">search</span>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search invoices..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearchChange()"
+      >
+    </div>
+    <div class="filter-actions">
+      <div class="date-picker-wrapper">
+        <input 
+          type="date" 
+          class="date-input" 
+          [(ngModel)]="startDate" 
+          (change)="onSearchChange()"
+          title="Start Date"
+        >
+        <span class="date-separator">-</span>
+        <input 
+          type="date" 
+          class="date-input" 
+          [(ngModel)]="endDate" 
+          (change)="onSearchChange()"
+          title="End Date"
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ INVOICES TABLE ═══════════════════ -->
+  @if (filteredInvoices.length > 0) {
+  <div class="invoices-card">
+    <div class="table-header">
+      <h4>Invoices</h4>
+      <span class="invoice-count">{{ filteredInvoices.length }} invoice{{ filteredInvoices.length !== 1 ? 's' : '' }}</span>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>INVOICE #</th>
+            <th>DATE</th>
+            <th>BILLING PERIOD</th>
+            <th>PLAN</th>
+            <th>AMOUNT</th>
+
+            <th class="text-right">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (inv of paginatedInvoices; track inv.id) {
+          <tr class="inv-row">
+            <td class="inv-number">{{ inv.number }}</td>
+            <td class="inv-date">{{ inv.date }}</td>
+            <td class="inv-period">{{ inv.billingPeriod }}</td>
+            <td>
+              <span class="plan-tag" [attr.data-plan]="inv.plan.toLowerCase()">{{ inv.plan }}</span>
+            </td>
+            <td class="inv-amount">{{ formatAmount(inv.amount) }} DT</td>
+
+            <td class="text-right">
+              <div class="row-actions">
+                <button class="action-btn" title="View Invoice" (click)="viewInvoice(inv)">
+                  <span class="material-symbols-outlined">visibility</span>
+                </button>
+                <button class="action-btn" title="Download PDF" (click)="downloadPDF(inv)">
+                  <span class="material-symbols-outlined">download</span>
+                </button>
+                <button class="action-btn" title="Print Invoice" (click)="printInvoice(inv)">
+                  <span class="material-symbols-outlined">print</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <p class="page-info">Showing <strong>{{ startItemIndex }} – {{ endItemIndex }}</strong> of {{ filteredInvoices.length }} invoices</p>
+      <div class="page-buttons">
+        <button class="pg-btn" (click)="previousPage()" [disabled]="currentPage === 1">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+        @for (p of pagesArray; track p) {
+        <button class="pg-btn" [class.active]="p === currentPage" (click)="goToPage(p)">{{ p }}</button>
+        }
+        <button class="pg-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  } @else {
+  <!-- ═══════════════════ EMPTY STATE ═══════════════════ -->
+  <div class="empty-state">
+    <div class="empty-icon-wrap">
+      <span class="material-symbols-outlined">receipt_long</span>
+    </div>
+    <h3 class="empty-title">No invoices available yet.</h3>
+    <p class="empty-desc">Invoices will appear here once billing activity occurs.</p>
+  </div>
+  }
+
+</section>
+
+<!-- ═══════════════════ INVOICE DETAIL MODAL ═══════════════════ -->
+@if (showInvoiceModal && selectedInvoice) {
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-card invoice-modal">
+    <div class="modal-header">
+      <div>
+        <h3>Invoice {{ selectedInvoice.number }}</h3>
+        <p class="modal-subtitle">{{ selectedInvoice.date }}</p>
+      </div>
+      <button class="close-btn" (click)="closeInvoiceModal()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <div class="modal-body invoice-body">
+      <!-- Company & Customer -->
+      <div class="invoice-parties">
+        <div class="party-block">
+          <span class="party-label">From</span>
+          <h4>{{ companyInfo.name }}</h4>
+          <p>{{ companyInfo.address }}</p>
+          <p>{{ companyInfo.city }}</p>
+          <p>{{ companyInfo.email }}</p>
+          <p>{{ companyInfo.phone }}</p>
+          <p class="tax-id">Tax ID: {{ companyInfo.taxId }}</p>
+        </div>
+        <div class="party-block">
+          <span class="party-label">Bill To</span>
+          <h4>{{ customerInfo.name }}</h4>
+          <p>{{ customerInfo.address }}</p>
+          <p>{{ customerInfo.city }}</p>
+          <p>{{ customerInfo.email }}</p>
+          <p>{{ customerInfo.phone }}</p>
+        </div>
+      </div>
+
+      <!-- Invoice Details -->
+      <div class="invoice-meta-grid">
+        <div class="meta-item">
+          <span class="meta-label">Invoice Number</span>
+          <span class="meta-value">{{ selectedInvoice.number }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Invoice Date</span>
+          <span class="meta-value">{{ selectedInvoice.date }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Billing Period</span>
+          <span class="meta-value">{{ selectedInvoice.billingPeriod }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Payment Method</span>
+          <span class="meta-value">
+            <span class="material-symbols-outlined" style="font-size: 16px; margin-right: 4px;">{{ selectedInvoice.paymentIcon }}</span>
+            {{ selectedInvoice.paymentMethod }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Line Items -->
+      <div class="invoice-items-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Qty</th>
+              <th class="text-right">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="item-desc-main">{{ selectedInvoice.plan }} Plan — Monthly Subscription</div>
+                <div class="item-desc-sub">{{ selectedInvoice.billingPeriod }}</div>
+              </td>
+              <td>1</td>
+              <td class="text-right">{{ formatAmount(selectedInvoice.amount) }} DT</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Totals -->
+      <div class="invoice-totals">
+        <div class="total-row">
+          <span>Subtotal</span>
+          <span>{{ formatAmount(selectedInvoice.amount) }} DT</span>
+        </div>
+        <div class="total-row">
+          <span>Tax (19%)</span>
+          <span>{{ formatAmount(selectedInvoice.amount * 0.19) }} DT</span>
+        </div>
+        <div class="total-row grand-total">
+          <span>Total</span>
+          <span>{{ formatAmount(selectedInvoice.amount * 1.19) }} DT</span>
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div class="invoice-status-row">
+        <span class="status-tag large" [attr.data-status]="selectedInvoice.statusColor">
+          <span class="status-dot"></span>
+          {{ selectedInvoice.status }}
+        </span>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-ghost" (click)="closeInvoiceModal()">Close</button>
+      <button class="btn-secondary" (click)="printInvoice(selectedInvoice)">
+        <span class="material-symbols-outlined">print</span>
+        Print
+      </button>
+      <button class="btn-primary" (click)="downloadPDF(selectedInvoice)">
+        <span class="material-symbols-outlined">download</span>
+        Download PDF
+      </button>
+    </div>
+  </div>
+</div>
+}

@@ -1,0 +1,164 @@
+<div class="page-header">
+  <div class="current-plan-display">
+    <span class="cp-label">CURRENT PLAN</span>
+    <div class="cp-value">
+      <h2>{{ subscription.plan }}</h2>
+      <span class="cp-status" [attr.data-status]="subscription.status.toLowerCase()">
+        <span class="cp-dot"></span>
+        {{ subscription.status }}
+      </span>
+    </div>
+  </div>
+  <button class="back-btn" routerLink="/billing">
+    <span class="material-symbols-outlined">arrow_back</span>
+    Back to Invoices
+  </button>
+</div>
+
+<div class="pricing-hero">
+  <div class="hero-glow"></div>
+
+  <div class="toggle-wrap">
+    <span class="toggle-label" [class.active]="!isAnnual" id="monthly-label">Monthly</span>
+    <div class="toggle" [class.annual]="isAnnual" id="billing-toggle" (click)="toggleBilling()">
+      <div class="toggle-knob"></div>
+    </div>
+    <span class="toggle-label" [class.active]="isAnnual" id="annual-label">Annual <span class="save-badge">Save 20%</span></span>
+  </div>
+</div>
+
+<div class="plans" id="plans">
+  <!-- STARTER -->
+  <div class="plan-card">
+    <p class="plan-name">Starter</p>
+    <div style="margin-bottom:4px">
+      <span class="plan-currency">TND</span>
+      <span class="plan-price" id="price-starter">{{ getStarterPrice() }}</span>
+      <span class="plan-period">/month</span>
+    </div>
+    <p class="plan-desc">Perfect for small cafés and food trucks just getting started with digital menus.</p>
+    <div class="plan-divider"></div>
+    <ul class="features-list">
+      <li>1 QR Menu</li>
+      <li>Up to 5 tables</li>
+      <li>Basic menu editor</li>
+      <li>QR code generator</li>
+      <li class="disabled">Order management</li>
+      <li class="disabled">Analytics dashboard</li>
+      <li class="disabled">Staff management</li>
+      <li class="disabled">Priority support</li>
+    </ul>
+    <button class="plan-btn outline" [class.selected]="selectedPlan === 'Starter'" (click)="selectPlan('Starter')">
+      {{ selectedPlan === 'Starter' ? 'Selected' : 'Select Starter' }}
+    </button>
+  </div>
+
+  <!-- PRO -->
+  <div class="plan-card featured">
+    <div class="featured-badge">Most Popular</div>
+    <p class="plan-name">Professional</p>
+    <div style="margin-bottom:4px">
+      <span class="plan-currency">TND</span>
+      <span class="plan-price" id="price-pro">{{ getProPrice() }}</span>
+      <span class="plan-period">/month</span>
+    </div>
+    <p class="plan-desc">The complete suite for growing restaurants that need live orders and real analytics.</p>
+    <div class="plan-divider"></div>
+    <ul class="features-list">
+      <li>Unlimited QR Menus</li>
+      <li>Up to 50 tables</li>
+      <li>Advanced menu editor</li>
+      <li>Live order management</li>
+      <li>Sales analytics dashboard</li>
+      <li>Table management</li>
+      <li>3 staff accounts</li>
+      <li class="disabled">Priority support</li>
+    </ul>
+    <button class="plan-btn primary" [class.selected]="selectedPlan === 'Professional'" (click)="selectPlan('Professional')">
+      {{ selectedPlan === 'Professional' ? 'Selected' : 'Select Professional' }}
+    </button>
+  </div>
+
+  <!-- ENTERPRISE -->
+  <div class="plan-card">
+    <p class="plan-name">Enterprise</p>
+    <div style="margin-bottom:4px">
+      <span class="plan-currency">TND</span>
+      <span class="plan-price" id="price-enterprise">{{ getEnterprisePrice() }}</span>
+      <span class="plan-period">/month</span>
+    </div>
+    <p class="plan-desc">Built for hotel restaurants, large chains, and multi-branch establishments.</p>
+    <div class="plan-divider"></div>
+    <ul class="features-list">
+      <li>Unlimited QR Menus</li>
+      <li>Unlimited tables</li>
+      <li>Full menu suite + API</li>
+      <li>Live order management</li>
+      <li>Advanced analytics + export</li>
+      <li>Unlimited staff accounts</li>
+      <li>Custom branding</li>
+      <li>Dedicated priority support</li>
+    </ul>
+    <button class="plan-btn outline" [class.selected]="selectedPlan === 'Enterprise'" (click)="selectPlan('Enterprise')">
+      {{ selectedPlan === 'Enterprise' ? 'Selected' : 'Select Enterprise' }}
+    </button>
+  </div>
+</div>
+
+<!-- COMPARISON -->
+<div class="comparison">
+  <h2 class="comp-title">Full feature comparison</h2>
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Starter</th>
+        <th>Pro</th>
+        <th>Enterprise</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>QR Digital Menus</td><td>1</td><td>Unlimited</td><td>Unlimited</td></tr>
+      <tr><td>Tables</td><td>5</td><td>50</td><td>Unlimited</td></tr>
+      <tr><td>Order Management</td><td class="cross">✗</td><td class="check">✓</td><td class="check">✓</td></tr>
+      <tr><td>Analytics Dashboard</td><td class="cross">✗</td><td class="check">✓</td><td class="check">✓</td></tr>
+      <tr><td>Staff Accounts</td><td>1</td><td>3</td><td>Unlimited</td></tr>
+      <tr><td>Custom Branding</td><td class="cross">✗</td><td class="cross">✗</td><td class="check">✓</td></tr>
+      <tr><td>API Access</td><td class="cross">✗</td><td class="cross">✗</td><td class="check">✓</td></tr>
+      <tr><td>Priority Support</td><td class="cross">✗</td><td class="cross">✗</td><td class="check">✓</td></tr>
+      <tr><td>Data Export (CSV/PDF)</td><td class="cross">✗</td><td class="check">✓</td><td class="check">✓</td></tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="next-action-container" *ngIf="selectedPlan">
+  <div class="next-action-card">
+    <div class="next-info">
+      <h3>You selected: <strong>{{ selectedPlan }}</strong></h3>
+      <p>Proceed to review your billing details.</p>
+    </div>
+    <button class="btn-primary btn-lg" (click)="goToNext()">
+      Next Step
+    </button>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="showWarningModal" (click)="closeWarningModal()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Active Plan Warning</h3>
+      <button class="close-btn" (click)="closeWarningModal()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom: 24px; color: #475569; line-height: 1.6;">You currently have an active <strong>{{ subscription.plan }}</strong> plan. Proceeding will override your current subscription. Are you sure you want to continue?</p>
+      <div style="display: flex; gap: 12px; justify-content: flex-end;">
+        <button class="btn-ghost" (click)="closeWarningModal()">Cancel</button>
+        <button class="btn-primary" (click)="proceedToNext()">Proceed</button>
+      </div>
+    </div>
+  </div>
+</div>
+
