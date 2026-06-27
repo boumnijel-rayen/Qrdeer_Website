@@ -188,13 +188,7 @@
           <span class="meta-label">Billing Period</span>
           <span class="meta-value">{{ selectedInvoice.billingPeriod }}</span>
         </div>
-        <div class="meta-item">
-          <span class="meta-label">Payment Method</span>
-          <span class="meta-value">
-            <span class="material-symbols-outlined" style="font-size: 16px; margin-right: 4px;">{{ selectedInvoice.paymentIcon }}</span>
-            {{ selectedInvoice.paymentMethod }}
-          </span>
-        </div>
+
       </div>
 
       <!-- Line Items -->
@@ -236,13 +230,7 @@
         </div>
       </div>
 
-      <!-- Status -->
-      <div class="invoice-status-row">
-        <span class="status-tag large" [attr.data-status]="selectedInvoice.statusColor">
-          <span class="status-dot"></span>
-          {{ selectedInvoice.status }}
-        </span>
-      </div>
+
     </div>
 
     <div class="modal-footer">

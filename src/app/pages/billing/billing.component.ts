@@ -2,6 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { jsPDF } from 'jspdf';
 
 export interface Invoice {
   id: string;
@@ -185,17 +186,59 @@ export class BillingComponent {
   }
 
   downloadPDF(invoice: Invoice): void {
-    // Simulate PDF download
-    const content = this.generateInvoiceText(invoice);
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${invoice.number}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    const doc = new jsPDF();
+    
+    doc.setFontSize(22);
+    doc.text('INVOICE', 105, 20, { align: 'center' });
+    
+    doc.setFontSize(12);
+    doc.text(`Invoice Number: ${invoice.number}`, 20, 40);
+    doc.text(`Invoice Date: ${invoice.date}`, 20, 50);
+    doc.text(`Billing Period: ${invoice.billingPeriod}`, 20, 60);
+    
+    doc.setFontSize(14);
+    doc.text('From:', 20, 80);
+    doc.setFontSize(12);
+    doc.text(this.companyInfo.name, 20, 90);
+    doc.text(this.companyInfo.address, 20, 100);
+    doc.text(this.companyInfo.city, 20, 110);
+    doc.text(this.companyInfo.email, 20, 120);
+    
+    doc.setFontSize(14);
+    doc.text('To:', 120, 80);
+    doc.setFontSize(12);
+    doc.text(this.customerInfo.name, 120, 90);
+    doc.text(this.customerInfo.address, 120, 100);
+    doc.text(this.customerInfo.city, 120, 110);
+    doc.text(this.customerInfo.email, 120, 120);
+    
+    doc.line(20, 135, 190, 135);
+    doc.setFontSize(12);
+    doc.text('Description', 20, 145);
+    doc.text('Amount (DT)', 160, 145);
+    doc.line(20, 150, 190, 150);
+    
+    doc.text(`${invoice.plan} Plan (Monthly)`, 20, 160);
+    doc.text(this.formatAmount(invoice.amount), 160, 160);
+    
+    doc.line(20, 170, 190, 170);
+    
+    doc.text('Subtotal:', 120, 180);
+    doc.text(this.formatAmount(invoice.amount), 160, 180);
+    
+    doc.text('Tax (19%):', 120, 190);
+    doc.text(this.formatAmount(invoice.amount * 0.19), 160, 190);
+    
+    doc.setFontSize(14);
+    doc.text('Total:', 120, 205);
+    doc.text(this.formatAmount(invoice.amount * 1.19), 160, 205);
+    
+    doc.setFontSize(12);
+    doc.text(`Status: ${invoice.status}`, 20, 220);
+    
+    doc.text('Thank you for your business!', 105, 250, { align: 'center' });
+    
+    doc.save(`${invoice.number}.pdf`);
   }
 
   printInvoice(invoice: Invoice): void {

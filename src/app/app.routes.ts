@@ -25,6 +25,7 @@ import { PasswordOtp } from './pages/password-otp/password-otp';
 import { MenuComponent } from './pages/menu/menu.component';
 import { BillingComponent } from './pages/billing/billing.component';
 import { ChoosePlan } from './pages/choose-plan/choose-plan';
+import { ContactComponent } from './pages/contact/contact.component';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent, pathMatch: 'full' },
@@ -56,6 +57,7 @@ export const routes: Routes = [
       { path: 'menu', component: MenuComponent },
       { path: 'billing', component: BillingComponent },
       { path: 'billing/choose-plan', component: ChoosePlan },
+      { path: 'contact', component: ContactComponent },
     ]
   },
   { path: '**', redirectTo: '' },
